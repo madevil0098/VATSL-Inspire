@@ -6,7 +6,7 @@ import "./setupGlobals";
 function App() {
   return (
     <div id="container" className="contain" >
-      <CustomAlert />
+      
       <Navbar />
       <Canvas />
       

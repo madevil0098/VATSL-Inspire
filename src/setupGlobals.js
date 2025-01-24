@@ -26,3 +26,6 @@ window.selectednodeMode=false;
 window.selectionMode=false;
 window.offsetX =0;
 window.offsetY = 0;
+window.brightness=0;
+window.contrast=0;
+window.saturation=0;

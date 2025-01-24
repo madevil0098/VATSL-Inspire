@@ -11,10 +11,8 @@ const ImageImport = (e) => {
   
     // Enable all buttons
     buttonIds.forEach((id) => {
-      const button = document.getElementById(id);
-      if (button) {
-        button.disabled = true; // Enable the button
-      }
+      window.toggleButtonState(id,true);
+      
     });
     reader.onload = function (event) {
         window.image_file = new Image();
@@ -52,7 +50,7 @@ const ImageImport = (e) => {
         window.canvas.addEventListener("mouseup", canvaImageup);
         window.canvas.addEventListener("mousemove", canvaImagemove);
 
-        //showCustomAlert("freeze image before drawing");
+        window.showCustomAlert("freeze image before drawing");
       };
     };
   
