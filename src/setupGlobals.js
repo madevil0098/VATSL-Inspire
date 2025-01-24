@@ -1,0 +1,28 @@
+// Define global variables
+window.image_file = null; // For image data
+window.canvas=null;
+window.ctx=null;
+window.imgX = 100;
+window.imgY = 100;
+window.imgWidth = 200;
+window.imgHeight = 150;
+window.isResizing = false;
+window.isDraggings = false;
+window.resizeDirection = "";
+window.startXX=0;
+window.startYY=0;
+window.xRatio = 1;
+window.yRatio = 1;
+window.node_distance = 50;
+window.saveimagecanva=null;
+window.savedCanvasState=null;
+window.activeMode = null; // Keep track of the active drawing mode
+
+// Arrays to store drawn lines and points
+window.drawn_item = [];
+window.multiPointLines = [];
+window.isFrozen = false;
+window.selectednodeMode=false;
+window.selectionMode=false;
+window.offsetX =0;
+window.offsetY = 0;
