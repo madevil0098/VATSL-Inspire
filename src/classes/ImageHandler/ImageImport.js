@@ -43,6 +43,7 @@ const ImageImport = (e) => {
         // Clear the canvas and draw the new image
         window.ctx.clearRect(0, 0, window.canvas.width + 100, window.canvas.height + 100);
         window.ctx.drawImage(window.image_file, window.imgX, window.imgY, window.imgWidth + 100, window.imgHeight + 100);
+        window.isFrozen=false;
   
         window.saveimagecanva = window.ctx.getImageData(0, 0, window.canvas.width, window.canvas.height);
         drawImage()

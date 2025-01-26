@@ -14,10 +14,10 @@ export default async function drawImage() {
   
     window.ctx.clearRect(0, 0, window.canvas.width, window.canvas.height);
     window.ctx.drawImage(window.image_file, window.imgX, window.imgY, window.imgWidth, window.imgHeight);
-    if (window.image_file){
-        applyAdjustments()
-       }
-    // Draw resize handles (corners and side)
     drawResizeHandles();
+
+    if (window.image_file){
+        applyAdjustments()}
+    // Draw resize handles (corners and side)
     
   }

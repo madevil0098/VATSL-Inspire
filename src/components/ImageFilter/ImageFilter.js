@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import debounce from "lodash.debounce"; // Install lodash.debounce for debouncing
-import applyAdjustments from "../../classes/FreezeOption/Filters";
 import AdjustBrightness from "../../classes/FreezeOption/AdjustBrightness";
 import AdjustContrast from "../../classes/FreezeOption/AdjustContrast";
 import AdjustSaturation from "../../classes/FreezeOption/AdjustSaturation";
-import "./Popup.css";
-
+import drawImage from "../../classes/ImageHandler/drawImage";
+import "./ImageFilter.css";
+import canvaImagedown from "../../classes/ImageHandler/canvaImagedown";
+import canvaImageup from "../../classes/ImageHandler/canvaImageup";
+import canvaImagemove from "../../classes/ImageHandler/canvaImagemove";
 const ImageAdjusterPopup = () => {
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
@@ -13,6 +15,19 @@ const ImageAdjusterPopup = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const closePopup = () => setIsPopupVisible(false);
+  const closePopup_done = () => {
+    const buttonIds = ["drawLine_1", "drawLine", "drawGrid","drawCurve"];
+  
+    // Enable all buttons
+    buttonIds.forEach((id) => {
+      window.toggleButtonState(id,false);
+      
+    });
+    window.isFrozen=true;
+    remove_permition();
+    setIsPopupVisible(false) 
+    drawImage()
+  };
 
   // Debounced handlers for smoother input
   const handleBrightnessChange = debounce(async (value) => {
@@ -26,7 +41,11 @@ const ImageAdjusterPopup = () => {
   const handleSaturationChange = debounce(async (value) => {
     await AdjustSaturation.saturationInput(value);
   }, 100);
-
+  const remove_permition =() =>{
+     window.canvas.removeEventListener("mousedown", canvaImagedown);
+            window.canvas.removeEventListener("mouseup", canvaImageup);
+            window.canvas.removeEventListener("mousemove", canvaImagemove);
+  }
   const resetAdjustments = () => {
     setBrightness(0);
     setContrast(0);
@@ -96,10 +115,32 @@ const ImageAdjusterPopup = () => {
                 </div>
                 <label className="present-mode">Preset Modes:
                 </label>
-                <div class="control-list">
-                  <button class="dropdown-item2 BBtn" id="nightmode" data-value="2">Night Mode</button>
-                  <button class="dropdown-item2 BBtn" id="freeze" data-value="2">Dusk Mode</button>
-                  <button class="dropdown-item3 BBtn" id="freeze_2" data-value="2">Lunar Glow</button>
+                <div className="control-list">
+                  <button className="dropdown-item2 BBtn" id="nightmode" onClick={() => {
+                    window.isFrozen=true;
+                    remove_permition();
+                    setBrightness("-120");
+                      handleBrightnessChange("-120");
+                      setContrast("40");
+                      handleContrastChange("40");
+                    }} data-value="2">Night Mode</button>
+                  <button className="dropdown-item2 BBtn" id="freeze" onClick={() => {
+                    window.isFrozen=true;
+                    remove_permition();
+
+                    setBrightness("-60");
+                      handleBrightnessChange("-60");
+                      
+                    }} data-value="2">Dusk Mode</button>
+                  <button className="dropdown-item3 BBtn" id="freeze_2" onClick={() => {
+                    window.isFrozen=true;
+                    remove_permition();
+
+                    setBrightness("40");
+                      handleBrightnessChange("40");
+                      setContrast("50");
+                      handleContrastChange("50");
+                    }} data-value="2">Lunar Glow</button>
                 </div>
               </div>
               <div className="right-side">
@@ -107,10 +148,14 @@ const ImageAdjusterPopup = () => {
                   <button id="reset" onClick={resetAdjustments}>
                     Reset
                   </button>
-                  <button className="doneBtn" id="doneButton_pop2" onClick={applyAdjustments}>
-                    Apply Adjustments
+                  <button className="doneBtn" id="doneButton_pop2" onClick={drawImage}>
+                    freeze
                   </button>
                 </div>
+                <div className="controls" >
+                  <button className="doneBtn" id="doneButton_pop2" onClick={closePopup_done}>
+                    Done
+                  </button></div>
               </div>
             </div>
           </div>

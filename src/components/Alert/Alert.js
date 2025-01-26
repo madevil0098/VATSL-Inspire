@@ -16,6 +16,8 @@ const CustomAlert = () => {
 
   // Function to close the alert
   const closeCustomAlert = () => {
+    window.isFrozen=false;
+
     setIsAlertVisible(false);
   };
 

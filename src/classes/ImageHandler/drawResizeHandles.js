@@ -1,5 +1,8 @@
 export default function drawResizeHandles() {
+  console.log(window.isFrozen)
     if (!window.isFrozen) {
+    console.log(window.isFrozen,"drawing")
+
         window.ctx.fillStyle = "gray"; // Color for the resize handles
       const handleSize = 10; // Size of the resize handles
   

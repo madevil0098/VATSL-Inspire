@@ -1,6 +1,10 @@
 import React, { useRef,useState,useEffect } from "react";
 import "./Navbar.css";
 import ImageImport from "../../classes/ImageHandler/ImageImport"
+import startDraw from "../../classes/Start_Drawing/Start_Element";
+import continueDraw from "../../classes/Start_Drawing/Continue_Element";
+import endDraw from "../../classes/Start_Drawing/End_Element";
+import clearEventListeners from "../../classes/Start_Drawing/Reset_Element";
 const Navbar = () => {
     const fileInputRef = useRef(null);
 
@@ -55,7 +59,15 @@ const Navbar = () => {
           id="drawLine_1"
           className="btn btn-dist toggleButton"
           disabled={isDisabled.drawLine_1}
-          onClick={() => window.toggleButtonState("drawLine_1",false)}
+          onClick={() => {
+            clearEventListeners();
+            window.activeMode = "size"; // Set active mode to 'line'
+            window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+          
+            // Add event listeners for drawing on canvas
+            window.canvas.addEventListener("mousedown", startDraw);
+            window.canvas.addEventListener("mousemove", continueDraw);
+            window.canvas.addEventListener("mouseup", endDraw);}}
         >
           <img className="icon" src="./assert/measurement.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
@@ -64,7 +76,15 @@ const Navbar = () => {
           id="drawLine"
           className="btn btn-draw toggleButton"
           disabled={isDisabled.drawLine}
-          onClick={() => window.toggleButtonState("drawLine",false)}
+          onClick={() => {
+            clearEventListeners();
+            window.activeMode = "line"; // Set active mode to 'line'
+            window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+          
+            // Add event listeners for drawing on canvas
+            window.canvas.addEventListener("mousedown", startDraw);
+            window.canvas.addEventListener("mousemove", continueDraw);
+            window.canvas.addEventListener("mouseup", endDraw);}}
         >
           <img className="icon" src="./assert/pencil.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
@@ -73,7 +93,15 @@ const Navbar = () => {
           id="drawCurve"
           className="btn btn-curve toggleButton"
           disabled={isDisabled.drawCurve}
-          onClick={() => window.toggleButtonState("drawCurve",false)}
+          onClick={() =>{
+            clearEventListeners();
+            window.activeMode = "curve"; // Set active mode to 'line'
+            window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+          
+            // Add event listeners for drawing on canvas
+            window.canvas.addEventListener("mousedown", startDraw);
+            window.canvas.addEventListener("mousemove", continueDraw);
+            window.canvas.addEventListener("mouseup", endDraw);}}
         >
           <img className="icon" src="./assert/curve-line.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
@@ -82,7 +110,15 @@ const Navbar = () => {
           id="drawGrid"
           className="btn btn-grid toggleButton"
           disabled={isDisabled.drawGrid}
-          onClick={() => window.toggleButtonState("drawGrid",false)}
+          onClick={() =>{
+            clearEventListeners();
+            window.activeMode = "grid"; // Set active mode to 'line'
+            window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+          
+            // Add event listeners for drawing on canvas
+            window.canvas.addEventListener("mousedown", startDraw);
+            window.canvas.addEventListener("mousemove", continueDraw);
+            window.canvas.addEventListener("mouseup", endDraw);}}
         >
           <img className="icon" src="./assert/grid.line.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />

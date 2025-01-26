@@ -4,13 +4,14 @@ import App from "./App";
 import "./index.css";
 import CustomAlert from "./components/Alert/Alert";
 import ImageAdjusterPopup from "./components/ImageFilter/ImageFilter";
-
-
+import CustomPopup from "./components/Popup/Popup";
 
 const root = ReactDOM.createRoot(document.body); // Create root directly on the body
 root.render(
   <React.StrictMode>
     <CustomAlert />
+    <CustomPopup />
+
     <ImageAdjusterPopup />
     <App />
   </React.StrictMode>
