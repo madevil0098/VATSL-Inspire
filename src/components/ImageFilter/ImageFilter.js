@@ -94,6 +94,13 @@ const ImageAdjusterPopup = () => {
                     }}
                   />
                 </div>
+                <label className="present-mode">Preset Modes:
+                </label>
+                <div class="control-list">
+                  <button class="dropdown-item2 BBtn" id="nightmode" data-value="2">Night Mode</button>
+                  <button class="dropdown-item2 BBtn" id="freeze" data-value="2">Dusk Mode</button>
+                  <button class="dropdown-item3 BBtn" id="freeze_2" data-value="2">Lunar Glow</button>
+                </div>
               </div>
               <div className="right-side">
                 <div className="control-list1">

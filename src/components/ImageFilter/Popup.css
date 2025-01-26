@@ -52,3 +52,6 @@
   .right-side .controls button {
     margin-bottom: 10px; 
   }
+.present-mode{
+  padding-top: 8px; padding-bottom: 10px;
+}
