@@ -4,7 +4,7 @@ export default class Node {
       this.y = y;
       this.colour = colour; // Array of 6 variables
       this.size = size; // A single variable to select
-      this.img_dat = ".\\assert\\assert\\EC-STAR-D70P5.png";
+      this.img_dat = ".\\assets\\EC-STAR-D70P5.png";
     }
     async drawImage(ctx_draw, image) {
       // Ensure the image is loaded before drawing

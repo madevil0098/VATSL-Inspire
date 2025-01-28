@@ -16,9 +16,7 @@ window.yRatio = 1;
 window.node_distance = 50;
 window.saveimagecanva=null;
 window.savedCanvasState=null;
-window.activeMode = null; // Keep track of the active drawing mode
-
-// Arrays to store drawn lines and points
+window.activeMode = null;
 window.drawn_item = [];
 window.multiPointLines = [];
 window.isFrozen = false;
@@ -44,3 +42,10 @@ window.startX = 0;
 window.startY = 0;
 window.endX = 0;
 window.endY = 0;
+window.rotating = false; // State for rotating grid
+window.dragStart = null; // Initial position for dragging
+window.rotationStart = null; // Initial angle for rotation
+window.selectedPoint = null;
+window.resizing = false;
+window.resizeHandle = null;
+window.handleSize = 15;

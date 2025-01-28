@@ -1,0 +1,113 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  .main-navbar {
+    height: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+     /*gap: 50px; */
+  }
+  .flex-2 {
+    display: flex;
+    align-items: center;
+    padding-top: -5px;
+    /* gap: 12px; */
+  }
+  .flex label {
+    font-size: 12px;
+    color: white;
+  }
+  .flex button {
+    font-size: 10px;
+    width: 80px;
+    color: black;
+    background-color: white;
+    margin-bottom: 0;
+    padding: 2px;
+  }
+  .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .flex span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .dropdow5n_container {
+    position: relative;
+    display: inline-block;
+  }
+  #dropdow5n-item_v {
+    padding: 8px 16px;
+    cursor: pointer;
+    display: grid;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+  }
+  #dropdow5n-item_v_pop {
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+  }
+  
+  #dropdow5n-item_v:hover {
+    background-color: #f1f1f1;
+  }
+  
+  #dropdow5n-item_v_pop:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .icon_{
+    width: 24px;
+    height: 24px;
+   
+  }
+  
+  #dropdow5n-item_v span {
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  #dropdow5n-item_v_pop span {
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .dropdow5n_toggle {
+    padding: 8px 16px;
+    background-color: gray;
+    color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 200px;
+    text-align: left;
+  }
+  
+  .dropdow5n_toggle:hover {
+    background-color: white;
+  }
+  
+  /* Ensuring the dropdown is not covered by other elements */
+  .dropdow5n {
+    z-index: 1000;
+  }  

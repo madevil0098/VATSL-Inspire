@@ -3,6 +3,7 @@ import Line from "../Drawing_Image/Line";
 import Grid from "../Drawing_Image/Grid";
 import getMousePos from "./Mouse_position";
 import clearEventListeners from "./Reset_Element";
+import handleObjectSelection from "../Selection/handleObjectSelection";
 export default function endDraw(e) {
     if (window.activeMode === "line") {
       window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
@@ -51,7 +52,7 @@ export default function endDraw(e) {
   
       
       //drawAllObjects(); // Redraw window.canvas
-      //setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
+      setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
       document.getElementById("drawLine").classList.remove("clicked");
     } else if (window.isDragging && window.startPoint && window.endPoint && window.activeMode === "size") {
       window.isDragging = false;
@@ -88,7 +89,7 @@ export default function endDraw(e) {
       //overlay.style.display = 'block';
       clearEventListeners();
       window.showCustomPopup();
-      //setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
+      setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
       document.getElementById("drawLine_1").classList.remove("clicked");
   
     } else if (window.activeMode === "grid") {
@@ -134,7 +135,7 @@ export default function endDraw(e) {
       //overlay.style.display = 'block';
       clearEventListeners();
       
-      //setTimeout(() => {handleObjectSelection({x: window.selectedObject.start,y: window.selectedObject.end});}, 100);
+      setTimeout(() => {handleObjectSelection({x: window.selectedObject.start,y: window.selectedObject.end});}, 100);
       document.getElementById("drawGrid").classList.remove("clicked");
   
     } else if (window.isDragging && window.currentCurve && window.activeMode === "curve") {
@@ -167,7 +168,7 @@ export default function endDraw(e) {
       overlay.style.display = 'block';*/
       
       //drawAllObjects(); // Redraw window.canvas
-      //setTimeout(() => {handleObjectSelection(window.selectedObject.curve.start);}, 100);
+      setTimeout(() => {handleObjectSelection(window.selectedObject.curve.start);}, 100);
       document.getElementById("drawCurve").classList.remove("clicked");
   
     }

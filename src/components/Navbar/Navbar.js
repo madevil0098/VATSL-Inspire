@@ -5,6 +5,12 @@ import startDraw from "../../classes/Start_Drawing/Start_Element";
 import continueDraw from "../../classes/Start_Drawing/Continue_Element";
 import endDraw from "../../classes/Start_Drawing/End_Element";
 import clearEventListeners from "../../classes/Start_Drawing/Reset_Element";
+import drawImage from "../../classes/ImageHandler/drawImage";
+import hideOptions from "../../classes/Selection/Hide_options";
+import getMousePos from "../../classes/Start_Drawing/Mouse_position";
+import drawAllObjects from "../../classes/Selection/drawAllObjects";
+import handleNodeSelection from "../../classes/Selection/HandleNodeSelection";
+import handleObjectSelection from "../../classes/Selection/handleObjectSelection";
 const Navbar = () => {
     const fileInputRef = useRef(null);
 
@@ -17,7 +23,53 @@ const Navbar = () => {
     drawCurve: true,
     drawGrid: true,
   });
+  const toggleSelectionMode = (mode) => {
+    // Ensure no event listeners are attached before toggling
+    clearEventListeners();
+    window.isSelecting = false; // Reset selection flag
+    window.selectedElement = null;
+    window.selectedObject = null;
+    window.selectednode = null;
+    window.checked_selection = true;
+  
+    // Hide options for cleaner UI
+    hideOptions();
+    drawAllObjects(); // Redraw everything
+  
+    // Toggle selection modes
+    if (mode === "object") {
+      window.selectionMode = !window.selectionMode;
+      window.selectednodeMode = false;
+    } else if (mode === "node") {
+      window.selectednodeMode = !window.selectednodeMode;
+      window.selectionMode = false;
+    }
+  
+    // Add event listeners based on the active selection mode
+    if (window.canvas) {
+      console.log("window.selectionMode",window.selectionMode)
+      window.canvas.addEventListener("mousedown", (e) => {
+        const pos = getMousePos(window.canvas, e);
+        
+        if (window.selectionMode) {
+          handleObjectSelection(pos); // Handle object selection
+        }
+    
+        if (window.selectednodeMode) {
+          handleNodeSelection(pos); // Handle node selection
+        }
+      }
+    );
+    }
+    // Update button styles based on the selection mode
+    document.getElementById("selectButton").classList.toggle("clicked", window.selectionMode);
+    document.getElementById("selectnode").classList.toggle("clicked", window.selectednodeMode);
+  };
+  
+  // Handling the onClick for selection mode buttons
+  
   useEffect(() => {
+    
       // Assign the function to the global `window` object
       window.toggleButtonState = (buttonId,value) => {
         setIsDisabled((prevState) => ({
@@ -125,15 +177,20 @@ const Navbar = () => {
         </button>
 
 
-        <button id="selectButton" className="btn btn-select toggleButton">
+        <button 
+          id="selectButton" 
+          className="btn btn-select toggleButton" 
+          onClick={() => toggleSelectionMode("object")}>
           <img className="icon" src="./assert/select.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
-
-
-        <button id="selectnode" className="btn btn-node toggleButton">
+        
+        <button 
+          id="selectnode" 
+          className="btn btn-node toggleButton" 
+          onClick={() => toggleSelectionMode("node")}>
           <img className="icon" src="./assert/touchscreen.png" alt="" />
-          <img className="btn btn-logo" src="./assert/download.png"  alt=""/>
+          <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
         <button id="saveCanvas" className="btn btn-save toggleButton">
           <img className="icon" src="./assert/save.png" alt="" />
@@ -143,11 +200,23 @@ const Navbar = () => {
           <img className="icon" src="./assert/file.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
-        <button id="clearobj" className="btn btn-erase toggleButton">
+        <button id="clearobj" className="btn btn-erase toggleButton" onClick={()=>{
+          window.drawn_item = [];
+          window.animations = [];
+          window.isSelecting = false; // Flag to track if we're in selection mode
+          window.selectedElement = null; // To store the selected line or grid
+          window.selectionMode = false; // Tracks whether we're in selection mode
+          window.selectednodeMode = false;
+          window.selectedObject = null;
+          window.selectednode = null; // Stores the selected line or grid
+          window.checked_selection = true;
+          drawImage();
+}
+        }>
           <img className="icon" src="./assert/eraser.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt=""/>
         </button>
-        <button id="clearCanvas" className="btn btn-clear toggleButton">
+        <button id="clearCanvas" className="btn btn-clear toggleButton" >
           <img className="icon" src="./assert/broom.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>

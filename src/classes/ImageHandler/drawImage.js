@@ -1,5 +1,6 @@
 import drawResizeHandles from "./drawResizeHandles"; 
 import applyAdjustments from "../FreezeOption/Filters"
+import drawAllObjects from "../Selection/drawAllObjects";
 export default async function drawImage() {
     //let imgY = Math.max((canvas.height - imgHeight) / 2, 50);
   
@@ -15,9 +16,10 @@ export default async function drawImage() {
     window.ctx.clearRect(0, 0, window.canvas.width, window.canvas.height);
     window.ctx.drawImage(window.image_file, window.imgX, window.imgY, window.imgWidth, window.imgHeight);
     drawResizeHandles();
+    window.savedCanvasState = window.ctx.getImageData(0, 0, window.canvas.width, window.canvas.height);
 
     if (window.image_file){
         applyAdjustments()}
     // Draw resize handles (corners and side)
-    
+    drawAllObjects();
   }
