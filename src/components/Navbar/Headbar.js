@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Headbar.css";
-
+import node_space_size_upd from "../../classes/Selected_Object_update/Node_Space_Size_upd";
+import color_ch from "../../classes/Selected_Object_update/Colour_Change";
+import node_size from "../../classes/Selected_Object_update/Node_Size";
+import drawAllObjects from "../../classes/Selection/drawAllObjects";
+import hideOptions from "../../classes/Selection/Hide_options";
 const Headbar = () => {
   // State to manage visibility of sections
   const [visibility, setVisibility] = useState({
@@ -65,14 +69,18 @@ const Headbar = () => {
           ))}
 
           {renderSection("options1", "options1", (
-            <div className="flex-1">
+            <div className="flex">
               <span>
-                <input type="checkbox" id="checkButton" defaultChecked />
+                <input type="checkbox" id="checkButton" defaultChecked
+                onChange={(e) => {
+                  window.checked_selection = e.target.checked ? 1 : 0;
+                  drawAllObjects();
+                }} />
                 <label>Hide Object Outline</label>
               </span>
               <span>
                 <label>Current Line Color</label>
-                <input type="color" id="changeColor" />
+                <input type="color" id="changeColor" onChange={color_ch}/>
               </span>
               <span>
                 <label>Node Size</label>
@@ -82,6 +90,7 @@ const Headbar = () => {
                   min="1"
                   max="100"
                   style={{ width: "37px" }} 
+                  onChange={node_size}
                 />
               </span>
             </div>
@@ -97,6 +106,10 @@ const Headbar = () => {
                   min="2"
                   max="100"
                   style={{ width: "37px" }}
+                  onChange={(e) => {
+                    node_space_size_upd(e, "line_nodeControl_distance")
+                  
+                  }}
                 />
               </span>
             </div>
@@ -106,18 +119,27 @@ const Headbar = () => {
             <div className="flex">
               <span>
                 <label style={{ display: "block" }}>Length of Building (In Meter)</label>
-                <input type="number" id="line_nodeControl_length" min="2" style={{ width: "37px" }} />
+                <input type="number" id="line_nodeControl_length" min="2" style={{ width: "37px" }}
+                onChange={(e) => {
+                  node_space_size_upd(e, "line_nodeControl_length")
+                
+                }}/>
               </span>
               <span>
                 <label style={{ display: "block", whiteSpace: "nowrap" }}>Number of Lights (Per Meter)</label>
-                <input type="number" id="grid_space_nodeControl2" min="10" max="30000" style={{ width: "37px" }} />
+                <input type="number" id="grid_space_nodeControl2" min="10" max="30000" style={{ width: "37px" }} 
+                onChange={(e) => {
+                  node_space_size_upd(e, "grid_space_nodeControl2")
+                
+                }}/>
               </span>
               <span>
-                <input type="checkbox" id="checkButton_line" checked={visibility.options1} // Assuming you control visibility with state
-                  onChange={(e) => setVisibility(prev => ({
-                    ...prev,
-                    options1: e.target.checked,
-                  }))}  />
+                <input type="checkbox" id="checkButton_line" defaultChecked
+                onChange={(e) => {
+                  const value = e.target.checked ? 1 : 0; // Assign 1 if checked, 0 otherwise
+                  window.selectedObject.line_data.transparency = value;
+                  drawAllObjects();
+                }}/>
                 <label>Hide Distance Line</label>
               </span>
             </div>
@@ -133,6 +155,10 @@ const Headbar = () => {
                   min="2"
                   max="30000"
                   style={{ width: "37px" }}
+                  onChange={(e) => {
+                    node_space_size_upd(e, "grid_length_nodeControl")
+                  
+                  }}
                 />
               </span>
               <span>
@@ -143,6 +169,10 @@ const Headbar = () => {
                   min="2"
                   max="30000"
                   style={{ width: "37px" }}
+                  onChange={(e) => {
+                    node_space_size_upd(e, "grid_width_nodeControl")
+                  
+                  }}
                 />
               </span>
             </div>
@@ -157,6 +187,10 @@ const Headbar = () => {
                 min="0"
                 max="1"
                 step="0.01"
+                onChange={(e)=>{
+                  window.selectedObject.curve.transparency_line = e.target.value;
+                  drawAllObjects();
+                }}
               />
               <span id="alphaValue"></span>
               <span>
@@ -167,14 +201,20 @@ const Headbar = () => {
                   min="1"
                   max="300"
                   style={{ width: "37px" }}
+                  onChange={(e)=>{
+                    window.selectedObject.curve.updateControlPoints(window.ctx, parseInt(e.target.value));
+                    drawAllObjects();
+                  }}    
                 />
               </span>
               <span>
-                <input type="checkbox" id="checkButton_curve" checked={visibility.options1} // Assuming you control visibility with state
-                  onChange={(e) => setVisibility(prev => ({
-                    ...prev,
-                    options1: e.target.checked,
-                  }))}  />
+                <input type="checkbox" id="checkButton_curve" defaultChecked
+                onChange={(e) => {
+                  const value = e.target.checked ? 1 : 0; // Assign 1 if checked, 0 otherwise
+                  window.selectedObject.curve.transparency = value;
+
+                  drawAllObjects();
+                }}/>
                 <label>Hide Distance Line</label>
               </span>
             </div>
@@ -189,6 +229,7 @@ const Headbar = () => {
                 paddingLeft: "12px",
               }}
               id="doneButton"
+              onClick={hideOptions}
             >
               Done
             </button>

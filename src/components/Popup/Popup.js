@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Popup.css"; // Optional for styling
+import node_space_size_upd from "../../classes/Selected_Object_update/Node_Space_Size_upd";
+import drawAllObjects from "../../classes/Selection/drawAllObjects";
 
 const CustomPopup = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -50,6 +52,10 @@ const CustomPopup = () => {
                 min="1"
                 max="100"
                 style={{ width: "37px" }}
+                onChange={(e) => {
+                  node_space_size_upd(e, "line_nodeControl_length")
+                
+                }}
               />
             </div>
             <div className="grid-control grid-measure">
@@ -62,6 +68,10 @@ const CustomPopup = () => {
                 min="1"
                 max="3000"
                 style={{ width: "37px" }}
+                onChange={(e) => {
+                  node_space_size_upd(e, "grid_space_nodeControl2")
+                
+                }}
               />
             </div>
             <span
@@ -72,7 +82,12 @@ const CustomPopup = () => {
                 paddingBottom: "15px",
               }}
             >
-              <input type="checkbox" id="checkButton_line_pop" defaultChecked />
+              <input type="checkbox" id="checkButton_line_pop" defaultChecked 
+              onChange={(e) => {
+                                const value = e.target.checked ? 1 : 0; // Assign 1 if checked, 0 otherwise
+                                window.selectedObject.line_data.transparency = value;
+                                drawAllObjects();
+                              }}/>
               <label>Hide Distance Line</label>
             </span>
           </div>

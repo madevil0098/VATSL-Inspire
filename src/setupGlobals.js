@@ -49,3 +49,5 @@ window.selectedPoint = null;
 window.resizing = false;
 window.resizeHandle = null;
 window.handleSize = 15;
+window.animations = []; // Array to hold animations for each object
+window.defaultSpeed = 1;

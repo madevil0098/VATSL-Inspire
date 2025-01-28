@@ -11,6 +11,10 @@ import getMousePos from "../../classes/Start_Drawing/Mouse_position";
 import drawAllObjects from "../../classes/Selection/drawAllObjects";
 import handleNodeSelection from "../../classes/Selection/HandleNodeSelection";
 import handleObjectSelection from "../../classes/Selection/handleObjectSelection";
+import Selection_MouseDown from "../../classes/Selection_movement/Select_Object_Start";
+import Selection_Stop from "../../classes/Selection_movement/Select_Object_Stop";
+import Update_selected_Object from "../../classes/Selection_movement/Select_Object_Update";
+import Update_SelectionCursor from "../../classes/Selection_movement/Select_Object_Cursor";
 const Navbar = () => {
     const fileInputRef = useRef(null);
 
@@ -59,7 +63,13 @@ const Navbar = () => {
           handleNodeSelection(pos); // Handle node selection
         }
       }
+      
     );
+    window.canvas.addEventListener("mousedown", Selection_MouseDown);
+    window.canvas.addEventListener("mousemove", Update_SelectionCursor);
+    window.canvas.addEventListener("mousemove", Update_selected_Object);
+    window.canvas.addEventListener("mouseup", Selection_Stop);
+  
     }
     // Update button styles based on the selection mode
     document.getElementById("selectButton").classList.toggle("clicked", window.selectionMode);
@@ -216,7 +226,10 @@ const Navbar = () => {
           <img className="icon" src="./assert/eraser.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt=""/>
         </button>
-        <button id="clearCanvas" className="btn btn-clear toggleButton" >
+        <button id="clearCanvas" className="btn btn-clear toggleButton"  onClick={()=>{
+        window.location.reload();
+
+        }}>
           <img className="icon" src="./assert/broom.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
