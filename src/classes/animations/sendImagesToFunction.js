@@ -1,5 +1,7 @@
 import importAndResizeImage from "./importAndResizeImage";
 export default function sendImagesToFunction(object_, imageListData) {
+  if (!object_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === object_
     );

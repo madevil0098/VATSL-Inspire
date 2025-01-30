@@ -1,6 +1,8 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 
 export default function startRainbowEffect(objects_, speed = 1) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -12,14 +14,12 @@ export default function startRainbowEffect(objects_, speed = 1) {
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      hueOffset: 0,
       speed: Math.max(0.1, Math.min(10, 5 - speed)),
       animate() {
-        const nodeCountInput = Math.max(1, parseInt(document.getElementById("nodeCountInput").value) || 1); // Bandwidth of colors
-        const rainbowBands = parseInt(document.getElementById("rainbowBandsInput").value) || 7; // Number of rainbow colors
+        const nodeCountInput = Math.max(1, parseInt(window.nodeCountInput) || 1); // Bandwidth of colors
+        const rainbowBands = parseInt(window.rainbowBandsInput) || 7; // Number of rainbow colors
         const time = Date.now() * 0.001 * (1 / this.speed); // Time factor for sliding
         const hueBase = (time * 100) % 360; // Base hue for smooth animation
-  
         if (objects_.type === "grid") {
           const gridNodes = objects_.grid.drawn_node;
           let twoDList = [];
@@ -33,7 +33,8 @@ export default function startRainbowEffect(objects_, speed = 1) {
             }
             twoDList.push(rowArray);
           }
-          
+          this.applyDiagonalRainbow(twoDList, nodeCountInput, rainbowBands, hueBase);
+
         } else if (objects_.type === "line") {
           objects_.line.drawn_node.forEach((node, index) => {
             // For lines, we treat index directly as the diagonal index
@@ -70,9 +71,9 @@ export default function startRainbowEffect(objects_, speed = 1) {
           });
         }
   
-        if (typeof drawAllObjects_img === "function") {
+        
           drawAllObjects_img();
-        }
+        
   
         this.animationFrameId = requestAnimationFrame(() => this.animate());
       },

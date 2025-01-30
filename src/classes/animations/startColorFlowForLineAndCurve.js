@@ -1,6 +1,8 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 
 export default function startColorFlowForLineAndCurve(objects_, direction = "left", time = 0.016) {
+  if (!objects_) return;
+
     // Check if an animation already exists for this object
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
@@ -14,10 +16,10 @@ export default function startColorFlowForLineAndCurve(objects_, direction = "lef
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      color: document.getElementById("startAnimationcolor10_4").value || "#FF0000",
-      blockSize: document.getElementById("numinput10").value || 2, // Size of the flowing block
+      color: window.color10_4 || "#FF0000",
+      blockSize: window.numinput10 || 2, // Size of the flowing block
       progress: 0, // Progress position of the block
-      speed: document.getElementById("speedInput10").value || 1,
+      speed:  1,
       
       lastUpdateTime: Date.now(),
       frameInterval: time * 1000, // Convert time to milliseconds

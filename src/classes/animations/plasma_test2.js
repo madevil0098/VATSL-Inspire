@@ -2,6 +2,8 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 
 export default function plasma_test2(objects_, speed = 1) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );

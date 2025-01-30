@@ -1,0 +1,14 @@
+export default function numupd(e) {
+    const direction = parseFloat(e.target.value); // Set the global default animation speed factor
+    if (!window.selectedObject) {
+      console.log("No object selected to stop the animation!");
+      return;
+    }
+  
+    const animationIndex = window.animations.findIndex(
+      (anim) => anim.objectId === window.selectedObject
+    );
+    if (animationIndex !== -1) {
+      window.animations[animationIndex].setnum(direction); // Update speed for all active window.animations
+    } // Set the new animation speed
+  };

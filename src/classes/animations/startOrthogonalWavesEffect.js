@@ -1,5 +1,7 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startOrthogonalWavesEffect(objects_) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -14,7 +16,7 @@ export default function startOrthogonalWavesEffect(objects_) {
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      speed: document.getElementById("speedInput3").value || 1,
+      speed: 1,
       
       animate() {
   

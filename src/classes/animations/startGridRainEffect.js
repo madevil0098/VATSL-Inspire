@@ -1,5 +1,7 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startGridRainEffect(objects_, interval = 1000) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -26,17 +28,17 @@ export default function startGridRainEffect(objects_, interval = 1000) {
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      color1: document.getElementById("startAnimationcolor1_2").value || "#FF0000",
-      color2: document.getElementById("startAnimationcolor2_2").value || "#0000FF",
-      interval: (document.getElementById("speedInput2").value * 1000) || 1000,
+      color1: window.color1_2 || "#FF0000",
+      color2: window.color2_2 || "#0000FF",
+      interval:  1000,
       
       lastUpdateTime: Date.now(),
       activeDrops: [],
       dropsPerFrame: parseInt(Math.sqrt(objects_.grid.columns)),
   
       animate() {
-        this.color1 = document.getElementById("startAnimationcolor1_2").value || "#FF0000"; // Default color if empty
-        this.color2 = document.getElementById("startAnimationcolor2_2").value || "#0000FF"; // You can similarly add for the second color
+        this.color1 = window.color1_2 || "#FF0000"; // Default color if empty
+        this.color2 = window.color2_2 || "#0000FF"; // You can similarly add for the second color
   
         if (!this.isAnimating) return;
   
@@ -105,6 +107,9 @@ export default function startGridRainEffect(objects_, interval = 1000) {
       start() {
         this.isAnimating = true;
         this.animate();
+      },
+      setcolor1(val) {
+        this.color1 = val;
       },
       setSpeed(newSpeed) {
         this.interval = (5 - newSpeed) * 1000;

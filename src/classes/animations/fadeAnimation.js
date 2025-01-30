@@ -1,5 +1,6 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startTwoColorFadingForSelectedObject(objects_, direction = "bottom-right") {
+  if (!objects_) return;
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -15,11 +16,11 @@ export default function startTwoColorFadingForSelectedObject(objects_, direction
       frameInterval:0.016*  1000, // Convert time to milliseconds
       accumulatedTime: 0,
       lastUpdateTime: Date.now(),
-      color1: document.getElementById("startAnimationcolor1_1").value || "#FF0000",
-      color2: document.getElementById("startAnimationcolor2_1").value || "#0000FF",
+      color1: window.color1_1|| "#FF0000",
+      color2: window.color2_1 || "#0000FF",
   
-      speed:document.getElementById("speedInput0").value || 1,
-      direction: document.getElementById("direction-select").value.toLowerCase(),
+      speed:1,
+      direction:direction,
   
       animate() {
         const colorTransition = (ratio) => {
@@ -42,8 +43,8 @@ export default function startTwoColorFadingForSelectedObject(objects_, direction
         const currentTime = Date.now();
   
         // Update animation parameters
-        this.color1 = document.getElementById("startAnimationcolor1_1").value || "#FF0000";
-        this.color2 = document.getElementById("startAnimationcolor2_1").value || "#0000FF";
+        this.color1 = window.color1_1|| "#FF0000";
+        this.color2 = window.color2_1|| "#0000FF";
         const deltaTime = currentTime - this.lastUpdateTime;
         this.frameInterval=this.speed *1000
         this.accumulatedTime += deltaTime;
@@ -161,12 +162,16 @@ export default function startTwoColorFadingForSelectedObject(objects_, direction
         this.lastUpdateTime = Date.now();
         this.animate();
       },
-  
+      setcolor1(val) {
+        this.color1 = val;
+      },
       stop() {
         this.isAnimating = false;
         cancelAnimationFrame(this.animationFrameId);
       },
-  
+      setdirectio(direction) {
+        this.direction = direction; // Update speed for this animation instance
+      },
       setSpeed(newSpeed) {
         this.speed = Math.max(Math.min(newSpeed, 5), 0.1); // Clamp to 0.1-5
       },

@@ -2,6 +2,8 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 
 export default function startAuroraEffect(gridObject) {
+  if (!gridObject) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === gridObject
     );

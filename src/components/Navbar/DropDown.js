@@ -8,6 +8,7 @@ const importAll = (r) => r.keys().map((key) => ({
 
 const Dropdown = () => {
   const [files, setFiles] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {

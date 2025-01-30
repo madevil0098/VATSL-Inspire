@@ -6,6 +6,8 @@ export default function startGridTextScroll(
     interval = 200,
     scrollAxis = "horizontal"
   ) {
+  if (!objects_) return;
+
     // Check if an animation for this object already exists
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
@@ -39,16 +41,16 @@ export default function startGridTextScroll(
       isAnimating: true,
       animationFrameId: null,
       text,
-      color1: document.getElementById("startAnimationcolor1_4").value || "#FF0000",
-      color2: document.getElementById("startAnimationcolor2_4").value || "#0000FF",
+      color1: window.color1_4 || "#FF0000",
+      color2: window.color2_4 || "#0000FF",
       interval: 100,
-      direction: document.getElementById("direction-select_2").value.toLowerCase() || "horizontal",
+      direction: "horizontal",
       lastUpdateTime: Date.now(),
   
       async animate() {
-        this.text = document.getElementById("startTextButtontextInput").value;
-        this.color1 = document.getElementById("startAnimationcolor1_4").value || "#FF0000"; // Default color if empty
-        this.color2 = document.getElementById("startAnimationcolor2_4").value || "#0000FF"; // You can similarly add for the second color
+        this.text = window.startTextButtontextInput;
+        this.color1 = window.color1_4 || "#FF0000"; // Default color if empty
+        this.color2 = window.color2_4 || "#0000FF"; // You can similarly add for the second color
   
         if (!this.isAnimating) return;
   
@@ -83,6 +85,9 @@ export default function startGridTextScroll(
       },
       setdirectio(direction) {
         this.direction = direction; // Update speed for this animation instance
+      },
+      setcolor1(val) {
+        this.color1 = val;
       },
       stop() {
         this.isAnimating = false;

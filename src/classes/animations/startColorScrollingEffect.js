@@ -1,5 +1,7 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startColorScrollingEffect(objects_, speed = 1) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -7,7 +9,7 @@ export default function startColorScrollingEffect(objects_, speed = 1) {
       window.animations[existingAnimationIndex].stop();
       window.animations.splice(existingAnimationIndex, 1); // Removes the object from the array
     }
-    speed = parseInt(document.getElementById("speedInput5").value) || 1;
+    speed =  1;
   
   
     const animation = {

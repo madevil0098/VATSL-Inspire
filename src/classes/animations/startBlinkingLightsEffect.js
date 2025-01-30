@@ -1,5 +1,7 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startBlinkingLightsEffect(objects_, interval = 500, newSpotInterval = 500) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
@@ -15,9 +17,9 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      color1: document.getElementById("startAnimationcolor1_23").value || "#FFFFFF",
-      color2: document.getElementById("startAnimationcolor2_23").value || "#000000",
-      blinkInterval: (document.getElementById("speedInput23").value * 1000) || interval,
+      color1: window.color1_23 || "#FFFFFF",
+      color2: window.color2_23 || "#000000",
+      blinkInterval:  interval,
       newSpotInterval, // Time to add new spots
       holdTime: 2000, // Time to keep spots blinking
       activeNodes: [],
@@ -27,9 +29,9 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
         if (!this.isAnimating) return;
   
         const currentTime = Date.now();
-        this.color1= document.getElementById("startAnimationcolor1_23").value || "#FFFFFF";
-        this.color2=document.getElementById("startAnimationcolor2_23").value || "#000000";
-        this.blinkInterval=((5-document.getElementById("speedInput23").value) * 100) || interval;
+        this.color1= window.color1_23 || "#FFFFFF";
+        this.color2=window.color2_23 || "#000000";
+        this.blinkInterval= interval;
         
         // Blink currently active nodes
         this.activeNodes.forEach((activeNode) => {
@@ -79,6 +81,9 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
       start() {
         this.isAnimating = true;
         this.animate();
+      },
+      setcolor1(val) {
+        this.color1 = val;
       },
   
       stop() {

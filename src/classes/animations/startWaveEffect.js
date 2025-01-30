@@ -1,5 +1,7 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startWaveEffect(objects_, speed = 1, waveLength = 25) {
+  if (!objects_) return;
+
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );

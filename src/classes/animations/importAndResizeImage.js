@@ -1,5 +1,6 @@
 import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default async function importAndResizeImage(objects_, imageSource = "https://bcassetcdn.com/public/blog/wp-content/uploads/2021/11/06185453/Apple-1.png") {
+  if (!objects_) return;
 
     let image = new Image();
     image.crossOrigin = "anonymous";
