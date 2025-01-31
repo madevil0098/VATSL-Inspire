@@ -34,7 +34,20 @@ const Sidebar=() =>{
 useEffect(() => {
       // Sync with window.activeTool for global state tracking
       window.activeTool_sidebar = activeTools; 
-  
+      window.color1_1 = color1_1;
+      window.color2_1 = color2_1;
+      window.color1_2 = color1_2;
+      window.color2_2 = color2_2;
+      window.color1_4 = color1_4;
+      window.color2_4 = color2_4;
+      window.color1_10 = color1_10;
+      window.color1_23 = color1_23;
+      window.color2_23 = color2_23;
+      window.nodeCountInput = nodeCount;
+      window.rainbowBandsInput = rainbowBands;
+      window.numinput10 = numInput;
+      window.startTextButtontextInput = textInput;
+      
       // Remote activation (can be used from any folder)
       window.activateTool_sidebar = (toolName) => {
         console.log(toolName)
@@ -54,7 +67,7 @@ useEffect(() => {
       };
       
     
-    }, [activeTools]);
+    }, [activeTools, color1_1, color1_10, color1_2, color1_23, color1_4, color2_1, color2_2, color2_23, color2_4, nodeCount, numInput, rainbowBands, textInput]);
     const handleFileInputClick = () => {
         fileInputRef.current.click();
       };

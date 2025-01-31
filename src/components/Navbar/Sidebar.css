@@ -157,7 +157,7 @@
   .direction-select {
     font-size: 12px;
   }
-  .toggleButton.clicked {
+.clicked {
     background-color: darkgray;
     color: #ffffff;
     border-color: #0056b3;

@@ -19,9 +19,9 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
       animationFrameId: null,
       color1: window.color1_23 || "#FFFFFF",
       color2: window.color2_23 || "#000000",
-      blinkInterval:  interval,
       newSpotInterval, // Time to add new spots
       holdTime: 2000, // Time to keep spots blinking
+      blinkInterval:  interval,
       activeNodes: [],
       lastNewSpotTime: Date.now(),
   
@@ -31,7 +31,7 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
         const currentTime = Date.now();
         this.color1= window.color1_23 || "#FFFFFF";
         this.color2=window.color2_23 || "#000000";
-        this.blinkInterval= interval;
+        this.blinkInterval= (this.holdTime/4);
         
         // Blink currently active nodes
         this.activeNodes.forEach((activeNode) => {
@@ -85,7 +85,9 @@ export default function startBlinkingLightsEffect(objects_, interval = 500, newS
       setcolor1(val) {
         this.color1 = val;
       },
-  
+      setSpeed(newSpeed) {
+        this.holdTime = (5 - newSpeed) * 1000;
+      },
       stop() {
         this.isAnimating = false;
         if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);

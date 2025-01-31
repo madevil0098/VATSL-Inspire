@@ -16,9 +16,36 @@ const Headbar = () => {
     options4: false,
     options5: false,
   });
-
+  const getNodeControlSize = () => {
+    return (
+        window.selectedObject?.grid?.node_size ??
+        window.selectedObject?.line?.node_size ??
+        window.selectednode?.size ??
+        window.selectedObject?.curve?.node_size ?? // Add more as needed
+        ""
+    );
+};
+  const [gridRows, setGridRows] = useState(window.selectedObject?.grid?.rows ?? "");
+  const [changeColor, setChangeColor] = useState(window.selectedObject?.colour ?? "");
+  const [nodeControlSize, setNodeControlSize] = useState(getNodeControlSize);
+  const [lineNodeControlDistance, setLineNodeControlDistance] = useState(window.selectedObject?.line?.numOfDots ?? "");
+  const [lineNodeControlLength, setLineNodeControlLength] = useState( "");
+  const [gridSpaceNodeControl2, setGridSpaceNodeControl2] = useState( "");
+  const [gridWidthNodeControl, setGridWidthNodeControl] = useState(window.selectedObject?.grid?.columns  ?? "");
+  const [changeAlpha, setChangeAlpha] = useState(window.selectedObject?.curve?.transparency_line ?? "");
+  const [curveLength, setCurveLength] = useState(window.selectedObject?.curve?.controlPointCount ?? "");
+  
   // UseEffect to allow visibility control through the global `window` object
   useEffect(() => {
+        setGridRows(window.selectedObject?.grid?.rows ?? "");
+        setChangeColor(window.selectedObject?.colour ?? "");
+        setNodeControlSize(getNodeControlSize());
+        setLineNodeControlDistance(window.selectedObject?.line?.numOfDots ?? "");
+        setLineNodeControlLength("");  // Reset or assign a default value if applicable
+        setGridSpaceNodeControl2("");  // Reset or assign a default value if applicable
+        setGridWidthNodeControl(window.selectedObject?.grid?.columns ?? "");
+        setChangeAlpha(window.selectedObject?.curve?.transparency_line ?? "");
+        setCurveLength(window.selectedObject?.curve?.controlPointCount ?? "");
     window.setSectionVisibility = (section, value) => {
       if (visibility.hasOwnProperty(section)) {
         setVisibility((prev) => ({
@@ -80,17 +107,18 @@ const Headbar = () => {
               </span>
               <span>
                 <label>Current Line Color</label>
-                <input type="color" id="changeColor" onChange={color_ch}/>
+                <input type="color" id="changeColor" value={changeColor} onChange={(e)=>{color_ch(e);setChangeColor(e.target.value)}}/>
               </span>
               <span>
                 <label>Node Size</label>
                 <input
+                value={nodeControlSize}
                   type="number"
                   id="nodeControl_size"
                   min="1"
                   max="100"
                   style={{ width: "37px" }} 
-                  onChange={node_size}
+                  onChange={(e)=>{node_size(e);setNodeControlSize(e.target.value)}}
                 />
               </span>
             </div>
@@ -103,11 +131,13 @@ const Headbar = () => {
                 <input
                   type="number"
                   id="line_nodeControl_distance"
+                  value={lineNodeControlDistance}
                   min="2"
                   max="100"
                   style={{ width: "37px" }}
                   onChange={(e) => {
-                    node_space_size_upd(e, "line_nodeControl_distance")
+                    node_space_size_upd(e, "line_nodeControl_distance");
+                    setLineNodeControlDistance(e.target.value)
                   
                   }}
                 />
@@ -119,18 +149,18 @@ const Headbar = () => {
             <div className="flex">
               <span>
                 <label style={{ display: "block" }}>Length of Building (In Meter)</label>
-                <input type="number" id="line_nodeControl_length" min="2" style={{ width: "37px" }}
+                <input type="number" id="line_nodeControl_length" min="2" value={lineNodeControlLength} style={{ width: "37px" }}
                 onChange={(e) => {
-                  node_space_size_upd(e, "line_nodeControl_length")
-                
+                  node_space_size_upd(e, "line_nodeControl_length");
+                  setLineNodeControlLength(e.target.value)
                 }}/>
               </span>
               <span>
                 <label style={{ display: "block", whiteSpace: "nowrap" }}>Number of Lights (Per Meter)</label>
-                <input type="number" id="grid_space_nodeControl2" min="10" max="30000" style={{ width: "37px" }} 
+                <input type="number" id="grid_space_nodeControl2" value={gridSpaceNodeControl2} min="10" max="30000" style={{ width: "37px" }} 
                 onChange={(e) => {
-                  node_space_size_upd(e, "grid_space_nodeControl2")
-                
+                  node_space_size_upd(e, "grid_space_nodeControl2");
+                  setGridSpaceNodeControl2(e.target.value)
                 }}/>
               </span>
               <span>
@@ -153,11 +183,12 @@ const Headbar = () => {
                   type="number"
                   id="grid_length_nodeControl"
                   min="2"
+                  value={gridWidthNodeControl}
                   max="30000"
                   style={{ width: "37px" }}
                   onChange={(e) => {
                     node_space_size_upd(e, "grid_length_nodeControl")
-                  
+                    setGridWidthNodeControl(e.target.value)
                   }}
                 />
               </span>
@@ -166,12 +197,13 @@ const Headbar = () => {
                 <input
                   type="number"
                   id="grid_width_nodeControl"
+                  value={gridRows}
                   min="2"
                   max="30000"
                   style={{ width: "37px" }}
                   onChange={(e) => {
                     node_space_size_upd(e, "grid_width_nodeControl")
-                  
+                    setGridRows(e.target.value)
                   }}
                 />
               </span>
@@ -184,12 +216,14 @@ const Headbar = () => {
               <input
                 type="range"
                 id="changeAlpha"
+                value={changeAlpha}
                 min="0"
                 max="1"
                 step="0.01"
                 onChange={(e)=>{
                   window.selectedObject.curve.transparency_line = e.target.value;
                   drawAllObjects();
+                  setChangeAlpha(e.target.value)
                 }}
               />
               <span id="alphaValue"></span>
@@ -198,12 +232,14 @@ const Headbar = () => {
                 <input
                   type="number"
                   id="curve_length"
+                  value={curveLength}
                   min="1"
                   max="300"
                   style={{ width: "37px" }}
                   onChange={(e)=>{
                     window.selectedObject.curve.updateControlPoints(window.ctx, parseInt(e.target.value));
                     drawAllObjects();
+                    setCurveLength(e.target.value)
                   }}    
                 />
               </span>

@@ -5,6 +5,7 @@ export default function stopTwoColorFadingForSelectedObject() {
     const animationIndex = window.animations.findIndex(
       (anim) => anim.objectId === window.selectedObject
     );
+    console.log(animationIndex)
     if (animationIndex !== -1) {
       window.animations[animationIndex].stop();
       window.animations.splice(animationIndex, 1); // Remove the animation from the array

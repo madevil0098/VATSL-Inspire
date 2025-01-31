@@ -82,7 +82,7 @@ const Bottombar = ({ id, icon, used_in,button_click, buttonid, color1,color1_val
             id={`speedInput${id}`}
             className="speed-select_list small-input"
             min="0.1"
-            max="4.9"
+            max="4.5"
             step="0.1"
             defaultValue="1"
             onChange={speedupd}
@@ -98,7 +98,7 @@ const Bottombar = ({ id, icon, used_in,button_click, buttonid, color1,color1_val
           <button className="start-button" id={buttonid} onClick={()=>{console.log("Start button clicked!");button_click(window.selectedObject)}}>
             Start
           </button>
-          <button id={`stopAnimationButton${id}`} className="stop-button" onClick={() =>stopTwoColorFadingForSelectedObject} style={{ left: "8px" }}>
+          <button id={`stopAnimationButton${id}`} className="stop-button" onClick={() =>{stopTwoColorFadingForSelectedObject()}} style={{ left: "8px" }}>
             Stop
           </button>
         </div>
