@@ -19,16 +19,8 @@
     font-size: 18px;
   }
 
-  .controls{
-    display: flex;
-    flex-direction:row; 
-  }
-  .flex-control {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding-block: 5px;
-  }
+  
+  
   .left-side{
     display: flex;
     flex-direction:column;

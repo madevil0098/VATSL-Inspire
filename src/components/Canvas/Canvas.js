@@ -9,7 +9,6 @@ const Canvas = () => {
     const canvas = canvasRef.current;
     window.canvas = canvas;
     window.ctx = window.canvas.getContext("2d");
-    console.log("Canvas initialized on window object");
     window.workArea =canvasRef.current;
     
 

@@ -9,7 +9,6 @@ const CustomAlert = () => {
     // Assign the function to the global `window` object
     window.showCustomAlert = (message) => {
       setAlertMessage(message);
-      console.log("done");
       setIsAlertVisible(true);
     };
   }, []); // Empty dependency array ensures this runs once on component mount

@@ -7,17 +7,42 @@ import endDraw from "../../classes/Start_Drawing/End_Element";
 import clearEventListeners from "../../classes/Start_Drawing/Reset_Element";
 import drawImage from "../../classes/ImageHandler/drawImage";
 import hideOptions from "../../classes/Selection/Hide_options";
-import getMousePos from "../../classes/Start_Drawing/Mouse_position";
 import drawAllObjects from "../../classes/Selection/drawAllObjects";
-import handleNodeSelection from "../../classes/Selection/HandleNodeSelection";
-import handleObjectSelection from "../../classes/Selection/handleObjectSelection";
-import Selection_MouseDown from "../../classes/Selection_movement/Select_Object_Start";
-import Selection_Stop from "../../classes/Selection_movement/Select_Object_Stop";
-import Update_selected_Object from "../../classes/Selection_movement/Select_Object_Update";
-import Update_SelectionCursor from "../../classes/Selection_movement/Select_Object_Cursor";
+import Select_Object from "../../classes/Selection/Select_Object";
+import saveOnlyImage from "../../classes/Save/saveCanvas";
+import importJson from "../../classes/Save/importJson";
 const Navbar = () => {
     const fileInputRef = useRef(null);
+    const [activeTools, setActiveTools] = useState(() => window.activeTools || {}); // Maintain global state
 
+    useEffect(() => {
+      // Sync with window.activeTool for global state tracking
+      window.activeTool = activeTools; 
+  
+      // Remote activation (can be used from any folder)
+      window.activateTool = (toolName) => {
+        console.log(toolName)
+        setActiveTools((prev) => {
+          const updatedTools = { ...prev, [toolName]: true }; 
+          return updatedTools;
+        });
+      };
+      window.deactivateTool = (toolName) => {
+
+        setActiveTools((prev) => {
+          const updatedTools = { ...prev };
+          delete updatedTools[toolName]; // Remove from active tools
+          return updatedTools;
+        });
+      };
+      window.deactivateAllTools = () => {
+        setActiveTools(() => {
+          return {}; // Reset all tools
+        });
+        window.canvas.style.cursor = "default"; // Reset cursor
+      };
+    
+    }, [activeTools]);
   const handleFileInputClick = () => {
     fileInputRef.current.click();
   };
@@ -42,35 +67,19 @@ const Navbar = () => {
   
     // Toggle selection modes
     if (mode === "object") {
+      window.activateTool("select_object");
+
       window.selectionMode = !window.selectionMode;
       window.selectednodeMode = false;
     } else if (mode === "node") {
+      window.activateTool("select_node");
+
       window.selectednodeMode = !window.selectednodeMode;
       window.selectionMode = false;
     }
   
     // Add event listeners based on the active selection mode
-    if (window.canvas) {
-      console.log("window.selectionMode",window.selectionMode)
-      window.canvas.addEventListener("mousedown", (e) => {
-        const pos = getMousePos(window.canvas, e);
-        
-        if (window.selectionMode) {
-          handleObjectSelection(pos); // Handle object selection
-        }
-    
-        if (window.selectednodeMode) {
-          handleNodeSelection(pos); // Handle node selection
-        }
-      }
-      
-    );
-    window.canvas.addEventListener("mousedown", Selection_MouseDown);
-    window.canvas.addEventListener("mousemove", Update_SelectionCursor);
-    window.canvas.addEventListener("mousemove", Update_selected_Object);
-    window.canvas.addEventListener("mouseup", Selection_Stop);
-  
-    }
+    Select_Object();
     // Update button styles based on the selection mode
     document.getElementById("selectButton").classList.toggle("clicked", window.selectionMode);
     document.getElementById("selectnode").classList.toggle("clicked", window.selectednodeMode);
@@ -106,12 +115,12 @@ const Navbar = () => {
           onChange={ImageImport}
           style={{ display: "none" }}
         />
-        <button className="btn btn-image" aria-label="IMAGE INPORT" onClick={handleFileInputClick}>
+        <button className={`btn btn-image toggleButton ${activeTools["image"] ? "clicked" : ""}`} aria-label="IMAGE INPORT" onClick={handleFileInputClick}>
           <img className="icon" src="./assert/upload.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
 
-          <button className="btn btn-freeze toggle open-popup-btn toggleButton" aria-haspopup="true" aria-expanded="false"
+          <button className={`btn btn-freeze toggle open-popup-btn toggleButton ${activeTools["Freeze"] ? "clicked" : ""}`} aria-haspopup="true" aria-expanded="false"
             id="openPopup" onClick={window.openPopup}>
             <img className="icon" src="./assert/freezing.png" alt="" />
             <img className="btn btn-logo" src="./assert/download.png" alt=""/>
@@ -119,12 +128,13 @@ const Navbar = () => {
 
           <button
           id="drawLine_1"
-          className="btn btn-dist toggleButton"
+          className={`btn btn-dist toggleButton ${activeTools["size"] ? "clicked" : ""}`}
           disabled={isDisabled.drawLine_1}
           onClick={() => {
             clearEventListeners();
             window.activeMode = "size"; // Set active mode to 'line'
             window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+            window.activateTool("size");
           
             // Add event listeners for drawing on canvas
             window.canvas.addEventListener("mousedown", startDraw);
@@ -136,12 +146,13 @@ const Navbar = () => {
         </button>
         <button
           id="drawLine"
-          className="btn btn-draw toggleButton"
+          className={`btn btn-draw toggleButton ${activeTools["line"] ? "clicked" : ""}`}
           disabled={isDisabled.drawLine}
           onClick={() => {
             clearEventListeners();
             window.activeMode = "line"; // Set active mode to 'line'
             window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+            window.activateTool("line");
           
             // Add event listeners for drawing on canvas
             window.canvas.addEventListener("mousedown", startDraw);
@@ -153,13 +164,13 @@ const Navbar = () => {
         </button>
         <button
           id="drawCurve"
-          className="btn btn-curve toggleButton"
+          className={`btn btn-curve toggleButton ${activeTools["curve"] ? "clicked" : ""}`}
           disabled={isDisabled.drawCurve}
           onClick={() =>{
             clearEventListeners();
             window.activeMode = "curve"; // Set active mode to 'line'
             window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
-          
+            window.activateTool("curve");
             // Add event listeners for drawing on canvas
             window.canvas.addEventListener("mousedown", startDraw);
             window.canvas.addEventListener("mousemove", continueDraw);
@@ -170,12 +181,14 @@ const Navbar = () => {
         </button>
         <button
           id="drawGrid"
-          className="btn btn-grid toggleButton"
+          className={`btn btn-grid toggleButton ${activeTools["grid"] ? "clicked" : ""}`}
           disabled={isDisabled.drawGrid}
           onClick={() =>{
             clearEventListeners();
             window.activeMode = "grid"; // Set active mode to 'line'
             window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
+            window.activateTool("grid");
+            
           
             // Add event listeners for drawing on canvas
             window.canvas.addEventListener("mousedown", startDraw);
@@ -189,7 +202,7 @@ const Navbar = () => {
 
         <button 
           id="selectButton" 
-          className="btn btn-select toggleButton" 
+          className={`btn btn-select toggleButton ${activeTools["select_object"] ? "clicked" : ""}`} 
           onClick={() => toggleSelectionMode("object")}>
           <img className="icon" src="./assert/select.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
@@ -197,20 +210,21 @@ const Navbar = () => {
         
         <button 
           id="selectnode" 
-          className="btn btn-node toggleButton" 
+          className={`btn btn-node toggleButton ${activeTools["select_node"] ? "clicked" : ""}`} 
           onClick={() => toggleSelectionMode("node")}>
           <img className="icon" src="./assert/touchscreen.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
-        <button id="saveCanvas" className="btn btn-save toggleButton">
+        <button id="saveCanvas" className={`btn btn-save toggleButton ${activeTools["saveCanvas"] ? "clicked" : ""}`} onClick={saveOnlyImage}>
           <img className="icon" src="./assert/save.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
-        <button id="importJson" className="btn btn-reupload toggleButton">
+        <button id="importJson" className={`btn btn-reupload toggleButton ${activeTools["importJson"] ? "clicked" : ""}`} onClick={importJson}>
           <img className="icon" src="./assert/file.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
-        <button id="clearobj" className="btn btn-erase toggleButton" onClick={()=>{
+        <button id="clearobj" className={`btn btn-erase toggleButton ${activeTools["clearobj"] ? "clicked" : ""}`} onClick={()=>{
+          window.activateTool("clearobj")
           window.drawn_item = [];
           window.animations = [];
           window.isSelecting = false; // Flag to track if we're in selection mode
@@ -221,6 +235,7 @@ const Navbar = () => {
           window.selectednode = null; // Stores the selected line or grid
           window.checked_selection = true;
           drawImage();
+          setTimeout(() => {window.deactivateAllTools()},300)
 }
         }>
           <img className="icon" src="./assert/eraser.png" alt="" />

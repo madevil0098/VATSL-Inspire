@@ -157,6 +157,11 @@
   .direction-select {
     font-size: 12px;
   }
+  .toggleButton.clicked {
+    background-color: darkgray;
+    color: #ffffff;
+    border-color: #0056b3;
+  }
   .dropdown1 {
     position: relative;
     display: inline-block;

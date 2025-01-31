@@ -6,10 +6,8 @@ export default function handleObjectSelection(pos) {
     drawAllObjects(); // Redraw everything
     //selectedObject=null;
     let selectedIndex = -1;
-    console.log(pos)
     // Loop through drawn items to find a selectable object
     for (let i = 0; i < window.drawn_item.length; i++) {
-        console.log(i)
       if (isMouseNearObject(pos.x, pos.y, window.drawn_item[i])) {
         window.selectedObject = window.drawn_item[i];
         selectedIndex = i;

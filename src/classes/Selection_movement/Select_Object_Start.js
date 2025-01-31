@@ -30,7 +30,6 @@ export default function Selection_MouseDown(e){
         }; // Set initial drag offset
       } else if (window.selectedObject.grid && isMouseNearRotationHandle(pos, window.selectedObject.grid)) {
         // Start rotating the grid
-        console.log(isMouseNearRotationHandle(pos, window.selectedObject.grid))
         window.rotating = true;
         window.rotationStart = {
           x: pos.x,

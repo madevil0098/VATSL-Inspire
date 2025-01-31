@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import Bottombar from "./DropSide"
 import "./Sidebar.css"
 import direction from "../../classes/AnimationControl/direction";
@@ -15,7 +15,9 @@ import startRainbowEffect from "../../classes/animations/startRainbowEffect";
 import startBlinkingLightsEffect from "../../classes/animations/startBlinkingLightsEffect";
 import startOrthogonalWavesEffect from "../../classes/animations/startOrthogonalWavesEffect";
 const Sidebar=() =>{
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef(null);    
+    const [activeTools,setActiveTools] = useState(() => window.activeTools || {}); // Maintain global state
+    
     const [color1_1, setColor1_1] = useState(window.color1_1 || "#FF0000");
     const [color2_1, setColor2_1] = useState(window.color2_1 || "#0000FF");
     const [color1_2, setColor1_2] = useState(window.color1_2 || "#FF0000");
@@ -29,7 +31,30 @@ const Sidebar=() =>{
     const [rainbowBands, setRainbowBands] = useState(window.rainbowBandsInput || 7);
     const [numInput, setNumInput] = useState(window.numinput10 || 3);
     const [textInput, setTextInput] = useState(window.startTextButtontextInput || "VATSL");
+useEffect(() => {
+      // Sync with window.activeTool for global state tracking
+      window.activeTool_sidebar = activeTools; 
+  
+      // Remote activation (can be used from any folder)
+      window.activateTool_sidebar = (toolName) => {
+        console.log(toolName)
+        setActiveTools((prev) => {
+          const updatedTools = { ...prev, [toolName]: true }; 
+          return updatedTools;
+        });
+      };
+      window.deactivateTool_sidebar = (toolName) => {
+        console.log(toolName)
 
+        setActiveTools((prev) => {
+          const updatedTools = { ...prev };
+          delete updatedTools[toolName]; // Remove from active tools
+          return updatedTools;
+        });
+      };
+      
+    
+    }, [activeTools]);
     const handleFileInputClick = () => {
         fileInputRef.current.click();
       };
@@ -199,7 +224,7 @@ const Sidebar=() =>{
                         <div id="imageList11" className="image-list"></div>
                       </div>}
                 />
-                        <button id="startAnimationButton_full" className="btn btnm  toggleButton btnm-start" onClick={starrSelectedObject_full}>
+                        <button id="startAnimationButton_full" className={`btn btnm btnm-start toggleButton ${activeTools["startAnimationButton_full"] ? "clicked" : ""}`} onClick={starrSelectedObject_full}>
                 <img className="icon" src="./assert/start-button.png" alt="" />
                 <img className="btn" alt="" src="./assert/download.png" style={{
                         position: "absolute",
@@ -210,7 +235,7 @@ const Sidebar=() =>{
                         }} />
                 </button>
                 
-                <button id="stopAnimationButton_full" className="btn btnm  toggleButton btnm-stop" onClick={stopTwoColorFadingForSelectedObject_full}>
+                <button id="stopAnimationButton_full" className={`btn btnm   btnm-stop  toggleButton ${activeTools["stopAnimationButton_full"] ? "clicked" : ""}`} onClick={stopTwoColorFadingForSelectedObject_full}>
                 <img className="icon" src="./assert/stop.png" alt="" />
                 <img className="btn" alt="" src="./assert/download.png" style={{
                         position: "absolute",

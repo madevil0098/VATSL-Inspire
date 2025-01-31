@@ -4,6 +4,8 @@ import Grid from "../Drawing_Image/Grid";
 import getMousePos from "./Mouse_position";
 import clearEventListeners from "./Reset_Element";
 import handleObjectSelection from "../Selection/handleObjectSelection";
+import drawAllObjects from "../Selection/drawAllObjects";
+import Select_Object from "../Selection/Select_Object";
 export default function endDraw(e) {
     if (window.activeMode === "line") {
       window.canvas.style.cursor = "crosshair"; // Crosshair cursor for drawing lines
@@ -20,7 +22,7 @@ export default function endDraw(e) {
     }
     //hidepopOptions()
     window.selectionMode = true;
-  
+    Select_Object()
     let value_p;
     if (window.isDragging && window.startPoint && window.endPoint && window.activeMode === "line") {
       window.isDragging = false;
@@ -44,16 +46,17 @@ export default function endDraw(e) {
   
       window.startPoint = null;
       window.endPoint = null;
-      //drawAllObjects();
+      drawAllObjects();
   
       window.selectedObject = value_p
   
       clearEventListeners();
   
       
-      //drawAllObjects(); // Redraw window.canvas
       setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
       document.getElementById("drawLine").classList.remove("clicked");
+      drawAllObjects(); // Redraw window.canvas
+
     } else if (window.isDragging && window.startPoint && window.endPoint && window.activeMode === "size") {
       window.isDragging = false;
   
@@ -79,7 +82,7 @@ export default function endDraw(e) {
       // Reset points
       window.startPoint = null;
       window.endPoint = null;
-      //drawAllObjects();
+      drawAllObjects();
       //document.getElementById("popoption22").style.display = "block";
   
       // Remove event listeners to prevent further actions after finishing
@@ -91,6 +94,7 @@ export default function endDraw(e) {
       window.showCustomPopup();
       setTimeout(() => {handleObjectSelection(window.selectedObject.start);}, 100);
       document.getElementById("drawLine_1").classList.remove("clicked");
+      drawAllObjects(); // Redraw window.canvas
   
     } else if (window.activeMode === "grid") {
         window.isDrawing = false;
@@ -124,7 +128,7 @@ export default function endDraw(e) {
       window.drawn_item.push(value_p);
       griddrawn.drawDotMatrix(window.ctx);
       //now_canvas = window.ctx.getImageData(0, 0, window.canvas.width, window.canvas.height);
-      //drawAllObjects();
+      drawAllObjects();
       // Remove the event listeners once the grid is drawn
       //document.getElementById("popoption").style.display = "block";  // Show popoption panel
   
@@ -137,6 +141,7 @@ export default function endDraw(e) {
       
       setTimeout(() => {handleObjectSelection({x: window.selectedObject.start,y: window.selectedObject.end});}, 100);
       document.getElementById("drawGrid").classList.remove("clicked");
+      drawAllObjects(); // Redraw window.canvas
   
     } else if (window.isDragging && window.currentCurve && window.activeMode === "curve") {
       window.spacing = window.node_distance;
@@ -167,9 +172,10 @@ export default function endDraw(e) {
       /*popup1.style.display = 'block';
       overlay.style.display = 'block';*/
       
-      //drawAllObjects(); // Redraw window.canvas
+      drawAllObjects(); // Redraw window.canvas
       setTimeout(() => {handleObjectSelection(window.selectedObject.curve.start);}, 100);
       document.getElementById("drawCurve").classList.remove("clicked");
+      drawAllObjects(); // Redraw window.canvas
   
     }
   

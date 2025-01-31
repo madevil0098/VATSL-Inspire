@@ -12,6 +12,19 @@
   right: 4px;
   
 }
+button {
+  /* display: block; */
+  border: none;
+  cursor: pointer;
+}
+button {
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #6a6a6a;
+  color: white;
+  border: none;
+}
 .toggleButton.clicked {
   background-color: darkgray;
   color: #ffffff;
@@ -98,6 +111,15 @@
 }
 .btn-erase::after {
   content: "Clear All Objects";
+}
+
+.flex button {
+  font-size: 10px;
+  width: 80px;
+  color: black;
+  background-color: white;
+  margin-bottom: 0;
+  padding: 2px;
 }
 
 .btn-curve::after {

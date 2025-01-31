@@ -22,11 +22,14 @@ window.multiPointLines = [];
 window.isFrozen = false;
 window.selectednodeMode=false;
 window.selectionMode=false;
+window.checked_selection = true;
 window.offsetX =0;
 window.offsetY = 0;
 window.brightness=0;
 window.contrast=0;
 window.saturation=0;
+window.Hue=0;
+
 window.activeMode=null;
 window.activeMode = null;
 window.drawn_item = [];
@@ -64,3 +67,4 @@ window.nodeCountInput=3;
 window.rainbowBandsInput=7;
 window.numinput10=3;
 window.startTextButtontextInput="VATSL"
+

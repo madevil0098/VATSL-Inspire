@@ -158,8 +158,8 @@ export default function canvaImagemove(e) {
     window.imgY = mouseY - window.offsetY;
   
     // Prevent the image from being dragged out of the window.canvas
-    if (window.imgX < 10) window.imgX = 10;
-    if (window.imgY < 10) window.imgY = 10;
+    if (window.imgX < 0) window.imgX = 0;
+    if (window.imgY < 0) window.imgY = 0;
     if (window.imgX + window.imgWidth > window.canvas.width) window.imgX = window.canvas.width - window.imgWidth;
     if (window.imgY + window.imgHeight > window.canvas.height) window.imgY = window.canvas.height - window.imgHeight;
   }

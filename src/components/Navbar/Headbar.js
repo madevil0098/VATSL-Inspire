@@ -229,7 +229,12 @@ const Headbar = () => {
                 paddingLeft: "12px",
               }}
               id="doneButton"
-              onClick={hideOptions}
+              onClick={ () => {
+  
+                window.selectedObject = null; 
+                window.selectednode=null;
+                hideOptions();
+                drawAllObjects();}}
             >
               Done
             </button>

@@ -1,7 +1,6 @@
 export default function numupd(e) {
     const direction = parseFloat(e.target.value); // Set the global default animation speed factor
     if (!window.selectedObject) {
-      console.log("No object selected to stop the animation!");
       return;
     }
   

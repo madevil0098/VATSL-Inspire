@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import speedupd from "../../classes/AnimationControl/speedupd";
-import color1upd from "../../classes/AnimationControl/color1upd";
 import stopTwoColorFadingForSelectedObject from "../../classes/AnimationControl/StopTwoColorFadingForSelectedObject";
 
 const Bottombar = ({ id, icon, used_in,button_click, buttonid, color1,color1_val, color2,color2_val, dropdown }) => {
@@ -21,15 +20,12 @@ const Bottombar = ({ id, icon, used_in,button_click, buttonid, color1,color1_val
   // Toggle dropdown
   const toggleDropdown = () => {
     if (!window.selectedObject) {
-      console.log("No object selected to stop the animation!");
       return;
     }
 
     if (used_in.includes(window.selectedObject.type)) {
       setIsOpen((prev) => !prev);
-      console.log(`${used_in} detected!`);
     } else {
-      console.log("No matching type detected for dropdown.");
     }
   };
 

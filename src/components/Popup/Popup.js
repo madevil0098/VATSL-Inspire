@@ -1,61 +1,66 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import "./Popup.css"; // Optional for styling
+import "./Popup.css";
 import node_space_size_upd from "../../classes/Selected_Object_update/Node_Space_Size_upd";
 import drawAllObjects from "../../classes/Selection/drawAllObjects";
-
 const CustomPopup = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
   const popupRef = useRef(null);
-  const offsetRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const showPopup = () => setIsPopupVisible(true);
-    window.showCustomPopup = showPopup;
-    return () => {
-      delete window.showCustomPopup; // Cleanup
-    };
+    window.showCustomPopup = () => setIsPopupVisible(true);
+    return () => delete window.showCustomPopup;
   }, []);
 
   const closeCustomPopup = useCallback(() => {
     setIsPopupVisible(false);
   }, []);
 
-  // Mouse Down Handler (Start Dragging)
   const handleMouseDown = (event) => {
-    if (popupRef.current) {
-      offsetRef.current = {
-        x: event.clientX - popupRef.current.offsetLeft,
-        y: event.clientY - popupRef.current.offsetTop,
-      };
-      setDragging(true);
-    }
+    if (!popupRef.current) return;
+    setDragging(true);
+    setStartX(event.clientX - popupRef.current.offsetLeft);
+    setStartY(event.clientY - popupRef.current.offsetTop);
+    popupRef.current.style.cursor = "grabbing";
   };
 
-  // Mouse Move Handler (Dragging)
   const handleMouseMove = (event) => {
-    if (dragging) {
-      setPosition({
-        x: event.clientX - offsetRef.current.x,
-        y: event.clientY - offsetRef.current.y,
-      });
-    }
+    if (!dragging || !popupRef.current) return;
+    popupRef.current.style.left = `${event.clientX - startX}px`;
+    popupRef.current.style.top = `${event.clientY - startY}px`;
   };
 
-  // Mouse Up Handler (Stop Dragging)
   const handleMouseUp = () => {
     setDragging(false);
+    if (popupRef.current) popupRef.current.style.cursor = "grab";
   };
 
+  const disablePopupDrag = () => setDragging(false);
+
+  // Attach and remove event listeners based on popup visibility
   useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    if (isPopupVisible) {
+      document.addEventListener("mousedown", handleMouseDown);
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.addEventListener("mousedown", handleMouseDown);
+      
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
     return () => {
+      document.addEventListener("mousedown", handleMouseDown);
+
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [dragging, handleMouseMove]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPopupVisible, dragging, startX, startY]);
 
   return (
     <>
@@ -65,14 +70,10 @@ const CustomPopup = () => {
         <div
           className="customPopup"
           ref={popupRef}
-          style={{
-            left: `${position.x}px`,
-            top: `${position.y}px`,
-            cursor: dragging ? "grabbing" : "grab",
-            position: "absolute",
-          }}
           onMouseDown={handleMouseDown}
+          style={{ position: "absolute", cursor: "grab" }}
         >
+        
           <span className="close" onClick={closeCustomPopup} aria-label="Close popup">
             &times;
           </span>
@@ -88,6 +89,7 @@ const CustomPopup = () => {
                 max="100"
                 style={{ width: "50px" }}
                 onChange={(e) => node_space_size_upd(e, "line_nodeControl_length")}
+                onMouseDown={disablePopupDrag}
               />
             </div>
 
@@ -101,6 +103,7 @@ const CustomPopup = () => {
                 max="3000"
                 style={{ width: "50px" }}
                 onChange={(e) => node_space_size_upd(e, "grid_space_nodeControl2")}
+                onMouseDown={disablePopupDrag}
               />
             </div>
 

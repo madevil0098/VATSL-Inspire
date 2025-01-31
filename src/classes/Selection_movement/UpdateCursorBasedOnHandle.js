@@ -1,7 +1,6 @@
 import getResizeHandle from "./GetResizeHandle";
 export default function updateCursorBasedOnHandle(mousePos, object) {
     const resizeHandle = getResizeHandle(mousePos, object);
-    console.log(resizeHandle)
     // Change the cursor based on the resize handle
     switch (resizeHandle) {
       case "start":

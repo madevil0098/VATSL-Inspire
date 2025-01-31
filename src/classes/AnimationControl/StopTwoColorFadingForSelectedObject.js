@@ -1,6 +1,5 @@
 export default function stopTwoColorFadingForSelectedObject() {
     if (!window.selectedObject) {
-      console.log("No object selected to stop the animation!");
       return;
     }
     const animationIndex = window.animations.findIndex(
