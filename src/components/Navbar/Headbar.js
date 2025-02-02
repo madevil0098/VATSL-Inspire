@@ -25,27 +25,25 @@ const Headbar = () => {
         ""
     );
 };
-  const [gridRows, setGridRows] = useState(window.selectedObject?.grid?.rows ?? "");
+  const [gridRows, setGridRows] = useState(window.selectedObject?.grid?.columns ?? "");
   const [changeColor, setChangeColor] = useState(window.selectedObject?.colour ?? "");
   const [nodeControlSize, setNodeControlSize] = useState(getNodeControlSize);
-  const [lineNodeControlDistance, setLineNodeControlDistance] = useState(window.selectedObject?.line?.numOfDots ?? "");
   const [lineNodeControlLength, setLineNodeControlLength] = useState( "");
   const [gridSpaceNodeControl2, setGridSpaceNodeControl2] = useState( "");
-  const [gridWidthNodeControl, setGridWidthNodeControl] = useState(window.selectedObject?.grid?.columns  ?? "");
+  const [gridWidthNodeControl, setGridWidthNodeControl] = useState(window.selectedObject?.grid?.rows  ?? "");
   const [changeAlpha, setChangeAlpha] = useState(window.selectedObject?.curve?.transparency_line ?? "");
-  const [curveLength, setCurveLength] = useState(window.selectedObject?.curve?.controlPointCount ?? "");
+  const [curveLength, setCurveLength] = useState(window.selectedObject?.curve?.controlPointCount ?? window.selectedObject?.line?.controlPointCount ??"");
   
   // UseEffect to allow visibility control through the global `window` object
   useEffect(() => {
-        setGridRows(window.selectedObject?.grid?.rows ?? "");
+        setGridRows(window.selectedObject?.grid?.columns  ?? "");
         setChangeColor(window.selectedObject?.colour ?? "");
         setNodeControlSize(getNodeControlSize());
-        setLineNodeControlDistance(window.selectedObject?.line?.numOfDots ?? "");
         setLineNodeControlLength("");  // Reset or assign a default value if applicable
         setGridSpaceNodeControl2("");  // Reset or assign a default value if applicable
-        setGridWidthNodeControl(window.selectedObject?.grid?.columns ?? "");
+        setGridWidthNodeControl(window.selectedObject?.grid?.rows ?? "");
         setChangeAlpha(window.selectedObject?.curve?.transparency_line ?? "");
-        setCurveLength(window.selectedObject?.curve?.controlPointCount ?? "");
+        setCurveLength(window.selectedObject?.curve?.controlPointCount ?? window.selectedObject?.line?.controlPointCount ?? "");
     window.setSectionVisibility = (section, value) => {
       if (visibility.hasOwnProperty(section)) {
         setVisibility((prev) => ({
@@ -72,7 +70,10 @@ const Headbar = () => {
       </div>
     );
   };
-
+  const [lineNodeControlDistances, setLineNodeControlDistances] = useState(
+    window.selectedObject?.line?.control?.map(() => "") || []
+  );
+  
   return (
     <div className="main-container">
       <div className="main-navbar">
@@ -126,23 +127,51 @@ const Headbar = () => {
 
           {renderSection("options2", "options2", (
             <div className="flex">
-              <span>
-                <label style={{ display: "block" }}>Number of Nodes</label>
+            {window.selectedObject?.line?.control?.map((controlPoint, index) => (
+              <span key={index}>
+                <label style={{ display: "block" }}>
+                  Number of Nodes ({index + 1})
+                </label>
                 <input
                   type="number"
-                  id="line_nodeControl_distance"
-                  value={lineNodeControlDistance}
+                  id={`line_nodeControl_distance_${index}`}
+                  value={lineNodeControlDistances[index] || controlPoint}
                   min="2"
                   max="100"
                   style={{ width: "37px" }}
                   onChange={(e) => {
-                    node_space_size_upd(e, "line_nodeControl_distance");
-                    setLineNodeControlDistance(e.target.value)
-                  
+                    const newValues = [...lineNodeControlDistances];
+                    newValues[index] = e.target.value;
+                    setLineNodeControlDistances(newValues);
+                    if (window.selectedObject?.line?.control) {
+                      window.selectedObject.line.control[index] = parseInt(e.target.value);
+                    }
+                    drawAllObjects();
+
                   }}
                 />
               </span>
-            </div>
+              
+            ))}
+            <span>
+                <label style={{ display: "block" }}>Control Point</label>
+                <input
+                  type="number"
+                  id="curve_length"
+                  value={curveLength}
+                  min="1"
+                  max="300"
+                  style={{ width: "37px" }}
+                  onChange={(e)=>{
+                    window.selectedObject.line.updateControlPoints(window.ctx, parseInt(e.target.value));
+                    drawAllObjects();
+                    setCurveLength(e.target.value)
+
+                  }}    
+                />
+                </span>
+          </div>
+          
           ))}
 
           {renderSection("options22", "options22", (
@@ -207,6 +236,9 @@ const Headbar = () => {
                   }}
                 />
               </span>
+              <button onClick={() => window.toggleGridPopup(true)}>Rotation Setting
+                
+              </button>
             </div>
           ))}
 

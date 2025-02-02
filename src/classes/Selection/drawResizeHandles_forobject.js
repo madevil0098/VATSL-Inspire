@@ -1,4 +1,3 @@
-import rotatePoint from "./rotatePoint";
 import drawButtonHandle from "./drawButtonHandle";
 export default function drawResizeHandles_forobject(object) {
     if (object.line) {
@@ -8,31 +7,32 @@ export default function drawResizeHandles_forobject(object) {
       drawButtonHandle(object.line_data.start.x, object.line_data.start.y); // Start point
       drawButtonHandle(object.line_data.end.x, object.line_data.end.y); // End point
     } else if (object.grid) {
-      const rotation = object.grid.rotation || 0; // Get rotation in radians
-      const centerX = object.grid.x + object.grid.width / 2;
-      const centerY = object.grid.y + object.grid.height / 2;
-  
-      // Calculate rotated corners
-      const corners = [{
-          x: object.grid.x,
-          y: object.grid.y
-        }, // Top-left
-        {
-          x: object.grid.x + object.grid.width,
-          y: object.grid.y
-        }, // Top-right
-        {
-          x: object.grid.x,
-          y: object.grid.y + object.grid.height
-        }, // Bottom-left
-        {
-          x: object.grid.x + object.grid.width,
-          y: object.grid.y + object.grid.height
-        }, // Bottom-right
-      ].map(corner => rotatePoint(corner.x, corner.y, centerX, centerY, rotation));
-  
+      let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    // Iterate through all visible nodes
+    for (let node of object.grid.nodes) {
+      let rotatedPos = node;
+      
+        // Update bounding box limits
+        minX = Math.min(minX, rotatedPos.x);
+        maxX = Math.max(maxX, rotatedPos.x);
+        minY = Math.min(minY, rotatedPos.y);
+        maxY = Math.max(maxY, rotatedPos.y);
+    }
+    const corners = [
+      { x: minX, y: minY }, // Top-left
+      { x: maxX, y: minY }, // Top-right
+      { x: maxX, y: maxY }, // Bottom-right
+      { x: minX, y: maxY }  // Bottom-left
+  ];
+
+  // Rotate corners using the grid's rotation angles
+      const rotatedCorners = corners.map(corner => {
+          return object.grid.apply3DRotation(corner.x, corner.y, 0); // z=0 since it's 2D
+      });
       // Draw handles for each corner
-      for (const corner of corners) {
+      for (const corner of rotatedCorners) {
         drawButtonHandle(corner.x, corner.y);
       }
     }

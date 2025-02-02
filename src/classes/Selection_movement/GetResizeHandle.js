@@ -1,5 +1,4 @@
 import isMouseNearPoint from "./IsMouseNearPoint";
-import rotatePoint from "../Selection/rotatePoint";
 export default function getResizeHandle(mousePos, object) {
     if (object.line) {
       if (isMouseNearPoint(mousePos.x, mousePos.y, object.line.start)) {
@@ -14,16 +13,36 @@ export default function getResizeHandle(mousePos, object) {
         return "end"; // Resizing end point
       }
     } else if (object.grid) {
-      const rotation = object.grid.rotation || 0; // Get rotation in radians
-      const centerX = object.grid.x + object.grid.width / 2;
-      const centerY = object.grid.y + object.grid.height / 2;
-  
+      let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    // Iterate through all visible nodes
+    for (let node of object.grid.nodes) {
+      let rotatedPos = node;
+      
+        // Update bounding box limits
+        minX = Math.min(minX, rotatedPos.x);
+        maxX = Math.max(maxX, rotatedPos.x);
+        minY = Math.min(minY, rotatedPos.y);
+        maxY = Math.max(maxY, rotatedPos.y);
+    }
+    const corner = [
+      { x: minX, y: minY }, // Top-left
+      { x: maxX, y: minY }, // Top-right
+      { x: maxX, y: maxY }, // Bottom-right
+      { x: minX, y: maxY }  // Bottom-left
+  ];
+
+  // Rotate corners using the grid's rotation angles
+      const rotatedCorners = corner.map(corner => {
+          return object.grid.apply3DRotation(corner.x, corner.y, 0); // z=0 since it's 2D
+      });
       // Calculate rotated corners
       const corners = {
-        "top-left": rotatePoint(object.grid.x, object.grid.y, centerX, centerY, rotation),
-        "top-right": rotatePoint(object.grid.x + object.grid.width, object.grid.y, centerX, centerY, rotation),
-        "bottom-left": rotatePoint(object.grid.x, object.grid.y + object.grid.height, centerX, centerY, rotation),
-        "bottom-right": rotatePoint(object.grid.x + object.grid.width, object.grid.y + object.grid.height, centerX, centerY, rotation),
+        "top-left": rotatedCorners[0],
+        "top-right": rotatedCorners[1],
+        "bottom-left": rotatedCorners[2],
+        "bottom-right": rotatedCorners[3],
       };
   
       // Check if the mouse is near any rotated corner

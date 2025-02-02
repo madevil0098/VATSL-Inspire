@@ -138,6 +138,8 @@ window.Hue=0;
                     value={brightness}
                     onMouseEnter={() => setSliderActive(true)} // Disable dragging
                     onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
+                    onMouseDownCapture={() => setSliderActive(true)}
+                    onMouseUpCapture={() => setSliderActive(false)}
                     onChange={(e) => {
                       const value = Number(e.target.value);
                       setBrightness(value);
@@ -161,6 +163,8 @@ window.Hue=0;
                     value={contrast}
                     onMouseEnter={() => setSliderActive(true)} // Disable dragging
                     onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
+                    onMouseDownCapture={() => setSliderActive(true)}
+                    onMouseUpCapture={() => setSliderActive(false)}
                     onChange={(e) => {
                       const value = Number(e.target.value);
                       setContrast(value);
@@ -184,6 +188,9 @@ window.Hue=0;
                     value={saturation}
                     onMouseEnter={() => setSliderActive(true)} // Disable dragging
                     onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
+                    onMouseDownCapture={() => setSliderActive(true)}
+                    onMouseUpCapture={() => setSliderActive(false)}
+                    
                     onChange={(e) => {
                       const value = Number(e.target.value);
                       setSaturation(value);
@@ -206,6 +213,8 @@ window.Hue=0;
                     value={Hue}
                     onMouseEnter={() => setSliderActive(true)} // Disable dragging
                     onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
+                    onMouseDownCapture={() => setSliderActive(true)}
+                    onMouseUpCapture={() => setSliderActive(false)}
                     onChange={(e) => {
                       const value = Number(e.target.value);
                       setHue(value);
@@ -267,9 +276,7 @@ window.Hue=0;
                     }}>
                     <RefreshCcw size={18} />
                   </button>
-                  <button className="doneBtn" onClick={drawImage}>
-                    Freeze
-                  </button>
+                  
                 </div>
                 <div className="controls">
                   <button className="doneBtn" onClick={closePopupDone}>

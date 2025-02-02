@@ -1,7 +1,5 @@
 import drawResizeHandles from "../ImageHandler/drawResizeHandles";
 import drawSelectionRectangle from "./drawSelectionRectangle";
-import rotatePoint from "./rotatePoint";
-import drawButtonHandle from "./drawButtonHandle";
 export default async function drawAllObjects() {
     await window.ctx.clearRect(0, 0, window.canvas.width, window.canvas.height);
   
@@ -36,21 +34,7 @@ export default async function drawAllObjects() {
     });
     if (window.selectedObject && window.checked_selection) {
       drawSelectionRectangle(window.selectedObject); // Draw selection highlight
-      if (window.selectedObject.grid) {
-        const rotation = window.selectedObject.grid.rotation || 0; // Get rotation in radians
-        const centerX = window.selectedObject.grid.x + window.selectedObject.grid.width / 2;
-        const centerY = window.selectedObject.grid.y + window.selectedObject.grid.height / 2;
-  
-        // Calculate the position directly above the center
-        const offsetX = 0; // No horizontal offset
-        const offsetY = -(window.selectedObject.grid.height / 2 + 30); // 20 pixels above the center
-  
-        // Calculate the rotated position for the handle
-        const handlePosition = rotatePoint(centerX + offsetX, centerY + offsetY, centerX, centerY, rotation);
-  
-        // Draw the handle at the calculated position
-        drawButtonHandle(handlePosition.x, handlePosition.y);
-      }
+     
   
   
     }

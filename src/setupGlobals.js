@@ -22,6 +22,7 @@ window.multiPointLines = [];
 window.isFrozen = false;
 window.selectednodeMode=false;
 window.selectionMode=false;
+window.selectedObject=null;
 window.checked_selection = true;
 window.offsetX =0;
 window.offsetY = 0;

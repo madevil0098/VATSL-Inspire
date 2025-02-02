@@ -1,4 +1,4 @@
-import rotatePoint from "./rotatePoint";
+
 export default function isMouseNearObject(mouseX, mouseY, object, tolerance = 0.5) {
     if (object.line) {
       const {
@@ -109,36 +109,23 @@ export default function isMouseNearObject(mouseX, mouseY, object, tolerance = 0.
       // Check if the point is within the width of the line
       return distToLine <= halfWidth;
     } else if (object.grid) {
-      const rotation = object.grid.rotation || 0; // Get the grid rotation in radians
-      const {
-        x,
-        y,
-        width,
-        height
-      } = object.grid;
-  
-      // Calculate the grid's center point
-      const centerX = x + width / 2;
-      const centerY = y + height / 2;
-  
-      // Rotate the mouse position to check if it's inside the rotated grid
-      const rotatedMouse = rotatePoint(mouseX, mouseY, centerX, centerY, -rotation); // Rotate mouse position by -rotation to match the grid's rotation
-  
-      // Calculate grid boundaries with threshold
-      const threshold = 7; // Set the threshold value
-      const gridStartX = x - threshold;
-      const gridEndX = x + width + threshold;
-      const gridStartY = y - threshold;
-      const gridEndY = y + height + threshold;
-  
-      // Check if the rotated mouse position is within the grid's bounding box (with threshold)
-      return (
-        rotatedMouse.x >= gridStartX &&
-        rotatedMouse.x <= gridEndX &&
-        rotatedMouse.y >= gridStartY &&
-        rotatedMouse.y <= gridEndY
-      );
-    } else if (object.node) {
+      for (let node of object.grid.drawn_node) {
+        const { x, y } = node.node; // Get transformed (visible) node position
+        const nodeSize = object.grid.node_size;
+        const cellSize = object.grid.cellSize;
+
+        // Effective selection area: max(nodeSize, cellSize * 0.5) ensures grid spaces are clickable
+        const selectionRange = Math.max(nodeSize, cellSize * 0.5) + tolerance;
+
+        if (
+            Math.abs(mouseX - x) <= selectionRange &&
+            Math.abs(mouseY - y) <= selectionRange
+        ) {
+            return true; // Mouse click is close enough to a visible node
+        }
+    }
+  }
+else if (object.node) {
       const distance = Math.sqrt(
         (object.node.x - mouseX) ** 2 + (object.node.y - mouseY) ** 2
       );

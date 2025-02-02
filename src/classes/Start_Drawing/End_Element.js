@@ -42,7 +42,7 @@ export default function endDraw(e) {
         spacing: window.spacing,
       }
       window.drawn_item.push(value_p);
-      window.linedrawn.drawLineWithNodes(window.ctx);
+      window.linedrawn.draw(window.ctx);
   
       window.startPoint = null;
       window.endPoint = null;

@@ -1,7 +1,6 @@
 import getMousePos from "../Start_Drawing/Mouse_position";
 import getResizeHandle from "./GetResizeHandle";
 import updateCursorBasedOnHandle from "./UpdateCursorBasedOnHandle";
-import isMouseNearRotationHandle from "./IsMouseNearRotationHandle";
 export default function Update_SelectionCursor(e){
     const pos = getMousePos(window.canvas, e);
   
@@ -12,9 +11,6 @@ export default function Update_SelectionCursor(e){
       if (hoveredHandle) {
         // Change cursor style when hovering over a resize handle
         updateCursorBasedOnHandle(pos, window.selectedObject)
-      } else if (isMouseNearRotationHandle(pos, window.selectedObject.grid) && window.selectedObject.grid) {
-        window.canvas.style.cursor = "nwse-resize"; // Cursor for resizing start point
-  
       } else if (window.selectedObject.curve) {
         const rect = window.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
