@@ -16,7 +16,7 @@ const Canvas = () => {
   }, []);
 
   return <div id="work-area" ref={workArea} className="canvas-container">
-        <canvas id="canvas" ref={canvasRef} ></canvas>;
+        <canvas id="canvas" ref={canvasRef} ></canvas>
         <img id="logo" src="./assert/LOGO_Rounded.png" alt="Logo" />
       </div>
 };

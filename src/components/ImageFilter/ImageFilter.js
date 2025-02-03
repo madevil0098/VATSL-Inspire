@@ -9,13 +9,11 @@ import canvaImagemove from "../../classes/ImageHandler/canvaImagemove";
 import brightnessInput from "../../classes/FreezeOption/AdjustBrightness";
 import contrastInput from "../../classes/FreezeOption/AdjustContrast";
 import saturationInput from "../../classes/FreezeOption/AdjustSaturation";
-import HueInput from "../../classes/FreezeOption/AdjustHue";
 import { RefreshCcw } from "lucide-react";
 const ImageAdjusterPopup = () => {
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
   const [saturation, setSaturation] = useState(0);
-  const [Hue, setHue] = useState(0);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -50,7 +48,6 @@ const ImageAdjusterPopup = () => {
   const handleBrightnessChange = debounce((value) => brightnessInput(value), 20);
   const handleContrastChange = debounce((value) => contrastInput(value), 20);
   const handleSaturationChange = debounce((value) => saturationInput(value), 20);
-  const handlehueChange = debounce((value) => HueInput(value), 10);
   const removePermission = () => {
     window.canvas.removeEventListener("mousedown", canvaImagedown);
     window.canvas.removeEventListener("mouseup", canvaImageup);
@@ -133,8 +130,8 @@ window.Hue=0;
                   <input
                     type="range"
                     id="brightness"
-                    min="-150"
-                    max="150"
+                    min="-100"
+                    max="100"
                     value={brightness}
                     onMouseEnter={() => setSliderActive(true)} // Disable dragging
                     onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
@@ -203,31 +200,7 @@ window.Hue=0;
                       handleSaturationChange(value);
                     }}/>
                 </div>
-                <div className="flex-control">
-                  <label>Hue:</label>
-                  <input
-                    type="range"
-                    id="hue"
-                    min="-150"
-                    max="150"
-                    value={Hue}
-                    onMouseEnter={() => setSliderActive(true)} // Disable dragging
-                    onMouseLeave={() => setSliderActive(false)} // Re-enable dragging
-                    onMouseDownCapture={() => setSliderActive(true)}
-                    onMouseUpCapture={() => setSliderActive(false)}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      setHue(value);
-                      handlehueChange(value);
-                    }}
-                  />
-                  <input className="three-digit-input"  type="numeical" value={Hue} onChange={(e) => {
-                    
-                      const value = Number(e.target.value);
-                      setHue(value);
-                      handlehueChange(value);
-                    }}/>
-                </div>
+            
                 <label className="present-mode">Preset Modes:
                 </label>
                 <div className="control-list">
@@ -236,8 +209,8 @@ window.Hue=0;
                     resetAdjustments()
 
                     removePermission();
-                    setBrightness("-120");
-                      handleBrightnessChange("-120");
+                    setBrightness("-60");
+                      handleBrightnessChange("-60");
                       setContrast("40");
                       handleContrastChange("40");
                     }} data-value="2">Night Mode</button>
@@ -247,8 +220,8 @@ window.Hue=0;
 
                     removePermission();
 
-                    setBrightness("-60");
-                      handleBrightnessChange("-60");
+                    setBrightness("-30");
+                      handleBrightnessChange("-30");
                       
                     }} data-value="2">Dusk Mode</button>
                   <button className="dropdown-item3 BBtn" id="freeze_2" onClick={() => {

@@ -18,6 +18,17 @@ export default function Selection_MouseDown(e){
           }
         }
   
+      } else if (window.selectedObject.line) {
+        const rect = window.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        window.selectedPoint = window.selectedObject.line.hitTest(x, y);
+        if (window.selectedObject.line.hitTest(x, y) !== "curve") {
+          if (window.selectedObject.line.hitTest(x, y) != null) {
+            window.canvas.style.cursor = "nesw-resize";
+          }
+        }
+  
       } else if (clickedHandle) {
         updateCursorBasedOnHandle(pos, window.selectedObject)
   

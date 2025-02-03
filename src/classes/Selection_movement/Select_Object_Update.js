@@ -49,9 +49,7 @@ function resizeLine(line, handle, dx, dy) {
         window.selectedPoint.x = x;
         window.selectedPoint.y = y;
         drawAllObjects(); // Redraw objects with updated sizes
-      }
-  
-      if (window.resizing && window.resizeHandle) {
+      } else if (window.resizing && window.resizeHandle) {
         const pos = getMousePos(window.canvas, e);
         const dx = pos.x - window.dragOffset.x;
         const dy = pos.y - window.dragOffset.y;

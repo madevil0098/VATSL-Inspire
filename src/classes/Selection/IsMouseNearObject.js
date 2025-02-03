@@ -1,6 +1,9 @@
 
 export default function isMouseNearObject(mouseX, mouseY, object, tolerance = 0.5) {
     if (object.line) {
+      if (object.line.hitTest(mouseX, mouseY)) {
+        return true;
+      }
       const {
         start,
         lineWidth,

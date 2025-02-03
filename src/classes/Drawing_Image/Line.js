@@ -14,7 +14,7 @@ export default class Line {
     this.nodes = [];
     this.control=[]
     this.transparency = 1;
-    this.node_size = this.lineWidth;
+    this.node_size = parseInt(this.lineWidth/2);
     this.initializeNodes();
     this.node_colour = "white";
     
@@ -110,20 +110,20 @@ export default class Line {
         node: holeNode
       });
     }
-  draw(ctx) {
+  async draw(ctx) {
 
-    this.drawCurve(ctx);
+    //this.drawCurve(ctx);
     this.drawn_node = [];
 
     for (let i = 0; i < this.nodes.length-1; i++){
-      console.log(this.nodes[i], this.nodes[i + 1],this.control[i])
-      this.drawLineWithNodes(this.nodes[i], this.nodes[i + 1],this.control[i], ctx)
+      await this.drawLineWithNodes(this.nodes[i], this.nodes[i + 1],this.control[i], ctx)
     }
-    this.drawNodes(ctx);
+   await this.drawNodes(ctx);
 
   }
 
   drawNodes(ctx) {
+    console.log(this.nodes,this.node_size)
     for (const node of this.nodes) {
       this.drawNode(ctx, node);
     }
@@ -131,8 +131,10 @@ export default class Line {
 
   drawNode(ctx, point) {
     ctx.beginPath();
-    ctx.arc(point.x, point.y, this.node_size, 0, Math.PI * 2);
-    ctx.fillStyle="black";
+    console.log(this.node_size+2.5)
+    ctx.arc(point.x, point.y, this.node_size*2.3, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(183, 201, 226, ${this.transparency})`;
+ 
     ctx.fill();
     
   }
@@ -153,8 +155,8 @@ export default class Line {
   }
   redraw(ctx) {
     
+    this.drawNodes(ctx);
     
-      this.draw(ctx);            // Fully redraw the curve
     
   }
   forcolour(ctx_draw) {

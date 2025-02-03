@@ -47,3 +47,33 @@
 .present-mode{
   padding-top: 8px; padding-bottom: 10px;
 }
+
+.control-grid {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+  gap: 5px;
+}
+.grid-control {
+  display: flex;
+  /*gap: 10px;*/
+  padding-bottom: 10px;
+}
+.grid-control1 input {
+  margin: 0px;
+  width: 30px;
+}
+.grid-control1 {
+  padding: 6px 0;
+}
+
+.doneBtn {
+  margin: 0 auto; /* Ensures no extra margins that break centering */
+  padding: 8px 16px; /* Adjusts button size for better visibility */
+  background-color: #6a6a6a; /* Matches the design */
+  color: #ffffff; /* Makes text readable */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Optional rounded corners */
+  cursor: pointer; /* Adds pointer for interactivity */
+  font-size: 12px;
+}

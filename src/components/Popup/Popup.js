@@ -87,7 +87,7 @@ const CustomPopup = () => {
                 type="number"
                 min="1"
                 max="100"
-                style={{ width: "50px" }}
+                style={{ width: "50px",marginRight:"20px" }}
                 onChange={(e) => node_space_size_upd(e, "line_nodeControl_length")}
                 onMouseDown={disablePopupDrag}
               />
@@ -107,7 +107,7 @@ const CustomPopup = () => {
               />
             </div>
 
-            <div style={{ width: "240px", paddingTop: "10px", paddingBottom: "15px" }}>
+            <div /* style={{ width: "240px", paddingTop: "10px", paddingBottom: "15px" }} */>
               <input
                 type="checkbox"
                 defaultChecked

@@ -1,10 +1,12 @@
 export default function getObjectBounds(object) {
     if (object.line) {
       // For line objects
-      const xMin = Math.min(object.start.x, object.end.x);
-      const yMin = Math.min(object.start.y, object.end.y);
-      const xMax = Math.max(object.start.x, object.end.x);
-      const yMax = Math.max(object.start.y, object.end.y);
+      const allPoints = [...object.line.nodes];
+      const xMin = Math.min(...allPoints.map(p => p.x));
+      const yMin = Math.min(...allPoints.map(p => p.y));
+      const xMax = Math.max(...allPoints.map(p => p.x));
+      const yMax = Math.max(...allPoints.map(p => p.y));
+      
       return {
         x: xMin - 5, // Add padding
         y: yMin - 5,
@@ -59,8 +61,17 @@ export default function getObjectBounds(object) {
       };
     } else if (object.curve) {
       // For curve objects
+      const allPoints = [...object.curve.nodes, ...object.curve.controls];
+      const xMin = Math.min(...allPoints.map(p => p.x));
+      const yMin = Math.min(...allPoints.map(p => p.y));
+      const xMax = Math.max(...allPoints.map(p => p.x));
+      const yMax = Math.max(...allPoints.map(p => p.y));
       
-      return true
-      ;
+      return {
+        x: xMin - 5, // Add padding
+        y: yMin - 5,
+        width: xMax - xMin + 10,
+        height: yMax - yMin + 10,
+      };
     }
   }

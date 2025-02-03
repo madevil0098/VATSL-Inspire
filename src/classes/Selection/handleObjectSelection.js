@@ -4,7 +4,7 @@ import isMouseNearObject from "./IsMouseNearObject";
 import showOptionsForSelectedObject from "./ShowOptionsForSelectedObject";
 export default function handleObjectSelection(pos) {
     drawAllObjects(); // Redraw everything
-    //selectedObject=null;
+    window.selectedObject=null;
     let selectedIndex = -1;
     // Loop through drawn items to find a selectable object
     for (let i = 0; i < window.drawn_item.length; i++) {

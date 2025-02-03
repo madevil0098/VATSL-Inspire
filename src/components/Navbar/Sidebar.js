@@ -5,7 +5,6 @@ import direction from "../../classes/AnimationControl/direction";
 import starrSelectedObject_full from "../../classes/AnimationControl/StartSelectedObject_full";
 import stopTwoColorFadingForSelectedObject_full from "../../classes/AnimationControl/StopTwoColorFadingForSelectedObject_full";
 import startTwoColorFadingForSelectedObject from "../../classes/animations/fadeAnimation";
-import startGridRainEffect from "../../classes/animations/startGridRainEffect";
 import startColorScrollingEffect from "../../classes/animations/startColorScrollingEffect";
 import numupd from "../../classes/AnimationControl/numupd";
 import startColorFlowForLineAndCurve from "../../classes/animations/startColorFlowForLineAndCurve";
@@ -14,14 +13,14 @@ import startAuroraEffect from "../../classes/animations/startAuroraEffect";
 import startRainbowEffect from "../../classes/animations/startRainbowEffect";
 import startBlinkingLightsEffect from "../../classes/animations/startBlinkingLightsEffect";
 import startOrthogonalWavesEffect from "../../classes/animations/startOrthogonalWavesEffect";
+import color1upd from "../../classes/AnimationControl/color1upd";
 const Sidebar=() =>{
     const fileInputRef = useRef(null);    
     const [activeTools,setActiveTools] = useState(() => window.activeTools || {}); // Maintain global state
     
     const [color1_1, setColor1_1] = useState(window.color1_1 || "#FF0000");
     const [color2_1, setColor2_1] = useState(window.color2_1 || "#0000FF");
-    const [color1_2, setColor1_2] = useState(window.color1_2 || "#FF0000");
-    const [color2_2, setColor2_2] = useState(window.color2_2 || "#0000FF");
+
     const [color1_4, setColor1_4] = useState(window.color1_4 || "#FF0000");
     const [color2_4, setColor2_4] = useState(window.color2_4 || "#0000FF");
     const [color1_10, setColor1_10] = useState(window.color1_10 || "#FF0000");
@@ -36,8 +35,7 @@ useEffect(() => {
       window.activeTool_sidebar = activeTools; 
       window.color1_1 = color1_1;
       window.color2_1 = color2_1;
-      window.color1_2 = color1_2;
-      window.color2_2 = color2_2;
+   
       window.color1_4 = color1_4;
       window.color2_4 = color2_4;
       window.color1_10 = color1_10;
@@ -56,6 +54,7 @@ useEffect(() => {
           return updatedTools;
         });
       };
+
       window.deactivateTool_sidebar = (toolName) => {
         console.log(toolName)
 
@@ -66,11 +65,11 @@ useEffect(() => {
         });
       };
       
-    
-    }, [activeTools, color1_1, color1_10, color1_2, color1_23, color1_4, color2_1, color2_2, color2_23, color2_4, nodeCount, numInput, rainbowBands, textInput]);
+    }, [activeTools, color1_1, color1_10, color1_23, color1_4, color2_1, color2_23, color2_4, nodeCount, numInput, rainbowBands, textInput]);
     const handleFileInputClick = () => {
         fileInputRef.current.click();
       };
+
     return <div className="bottom-navbar">
                 <h1 style={{alignself: "flex-end"}}>Effects</h1>
                 <div className="bottom-nav" id="tools">
@@ -81,7 +80,9 @@ useEffect(() => {
                     button_click={startTwoColorFadingForSelectedObject}
                     buttonid="startAnimationButton"
                     color1={color1_1}
-                    color1_val={(e) => setColor1_1(e.target.value)}
+                    color1_val={(e) => {setColor1_1(e.target.value);
+                      color1upd(e)
+                    }}
                     color2={color2_1}
                     color2_val={(e) => setColor2_1(e.target.value)}
 
@@ -131,7 +132,9 @@ useEffect(() => {
                     button_click={startColorFlowForLineAndCurve}
                     buttonid="startdrop"
                     color1={color1_10}
-                    color1_val={(e) => setColor1_10(e.target.value)}
+                    color1_val={(e) => { setColor1_10(e.target.value);
+                      color1upd(e)
+                    }}
 
                     color2={null}
                     dropdown={<div>
@@ -147,13 +150,14 @@ useEffect(() => {
                     button_click={startGridTextScroll}
                     buttonid="startTextButton"
                     color1={color1_4}
-                    color1_val={(e) => setColor1_4(e.target.value)}
+                    color1_val={(e) => { setColor1_4(e.target.value); color1upd(e)
+                    }}
 
                     color2={color2_4}
                     color2_val={(e) => setColor2_4(e.target.value)}
 
                     dropdown={<><div className="dropdown-item">
-                        <input className="small-input" type="text" value={textInput} onChange={(e) => setTextInput(Number(e.target.value))} id="startTextButtontextInput"
+                        <input className="small-input" type="text" value={textInput} onChange={(e) => setTextInput(e.target.value)} id="startTextButtontextInput"
                           placeholder="Enter text here" />
                       </div>
                       <div className="dropdown-item" data-value="3">
@@ -174,28 +178,17 @@ useEffect(() => {
                     color2={null}
                     dropdown={null}
                 />
-                <Bottombar
-                    id="2"
-                    icon="./assert/water.png"
-                    used_in="grid"
-                    button_click={startGridRainEffect}
-                    buttonid="startRainButton"
-                    color1={color1_2}
-                    color1_val={(e) => setColor1_2(e.target.value)}
-
-                    color2={color2_2}
-                    color2_val={(e) => setColor2_2(e.target.value)}
-
-                    dropdown={null}
-                />
+                
                 <Bottombar
                     id="23"
-                    icon="./assert/water.png"
+                    icon="./assert/stars.png"
                     used_in="grid"
                     button_click={startBlinkingLightsEffect}
                     buttonid="startsnowButton"
                     color1={color1_23}
-                    color1_val={(e) => setColor1_23(e.target.value)}
+                    color1_val={(e) => { setColor1_23(e.target.value);
+                      color1upd(e)
+                    }}
 
                     color2={color2_23}
                     color2_val={(e) => setColor2_23(e.target.value)}
@@ -204,7 +197,7 @@ useEffect(() => {
                 />
                 <Bottombar
                     id="3"
-                    icon="./assert/stars.png"
+                    icon="./assert/blur.png"
                     button_click={startOrthogonalWavesEffect}
                     used_in="grid"
                     buttonid="startPlasmaButton"
@@ -224,6 +217,7 @@ useEffect(() => {
                         height:" 100%"
                         }} />
                 </button>
+
                 <Bottombar
                     id="11"
                     icon="./assert/photo-edit.png"

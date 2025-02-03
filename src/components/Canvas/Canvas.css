@@ -7,9 +7,7 @@ canvas {
 #work-area {
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  
   width: 95%;
   height: 94vh;
   position: relative;
@@ -30,4 +28,64 @@ canvas {
   
   border: 1px solid #000;
   
+}
+
+
+.left-side{
+  display: flex;
+  flex-direction:column;
+  font-size: 13px;
+}
+
+.right-side{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.control-list {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+button#reset, 
+button#Light_freeze {
+  padding: 8px 16px; /* Adjusts button size */
+  background-color: #6a6a6a; /* Matches your design */
+  color: white; /* Makes text readable */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Optional rounded corners */
+  cursor: pointer;
+  font-size: 12px; /* Adds pointer for interactivity */
+}
+
+.BBtn {
+  margin: 0 auto; /* Ensures no extra margins that break centering */
+  padding: 8px 16px; /* Adjusts button size for better visibility */
+  background-color: #6a6a6a; /* Matches the design */
+  color: #ffffff; /* Makes text readable */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Optional rounded corners */
+  cursor: pointer; 
+  font-size: 12px;
+  /* Adds pointer for interactivity */
+}
+
+.reset{
+  border-radius: 4px;
+  padding: 0;
+}
+
+.doneBtn {
+  margin: 0 auto; /* Ensures no extra margins that break centering */
+  padding: 8px 16px; /* Adjusts button size for better visibility */
+  background-color: #6a6a6a; /* Matches the design */
+  color: #ffffff; /* Makes text readable */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Optional rounded corners */
+  cursor: pointer; /* Adds pointer for interactivity */
+  font-size: 12px;
 }

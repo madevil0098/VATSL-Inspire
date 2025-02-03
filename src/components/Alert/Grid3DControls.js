@@ -105,8 +105,8 @@ const handleMouseDown = (event) => {
               </div>
             ))}
           </div>
-          <button className="close-btn" onClick={() => setIsVisible(false)}>
-            Close
+          <button className="close-btn doneBtn" onClick={() => setIsVisible(false)}>
+            Done
           </button>
         </div>
       )}

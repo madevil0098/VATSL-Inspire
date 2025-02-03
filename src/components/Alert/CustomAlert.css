@@ -30,3 +30,15 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
   }
+
+  .doneBtn {
+    margin: 0 auto; /* Ensures no extra margins that break centering */
+    padding: 8px 16px; /* Adjusts button size for better visibility */
+    background-color: #6a6a6a; /* Matches the design */
+    color: #ffffff; /* Makes text readable */
+    border: none; /* Removes border */
+    border-radius: 4px; /* Optional rounded corners */
+    cursor: pointer; /* Adds pointer for interactivity */
+    font-size: 12px;
+  }
+  

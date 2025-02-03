@@ -16,15 +16,13 @@ export default function startColorFlowForLineAndCurve(objects_, direction = "lef
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
-      color: window.color10_4 || "#FF0000",
+      color: window.color1_10 || "#FF0000",
       blockSize: window.numinput10 || 2, // Size of the flowing block
       progress: 0, // Progress position of the block
       speed:  1,
-      
       lastUpdateTime: Date.now(),
       frameInterval: time * 1000, // Convert time to milliseconds
       accumulatedTime: 0,
-  
       animate() {
         // Ensure valid object
         if (!objects_ || !objects_.type) return;

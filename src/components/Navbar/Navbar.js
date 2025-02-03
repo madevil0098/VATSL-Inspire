@@ -16,6 +16,38 @@ const Navbar = () => {
     const [activeTools, setActiveTools] = useState(() => window.activeTools || {}); // Maintain global state
 
     useEffect(() => {
+      window.toggleSelectionMode = (mode) => {
+        // Ensure no event listeners are attached before toggling
+        clearEventListeners();
+        window.isSelecting = false; // Reset selection flag
+        window.selectedElement = null;
+        window.selectedObject = null;
+        window.selectednode = null;
+        window.checked_selection = true;
+      
+        // Hide options for cleaner UI
+        hideOptions();
+        drawAllObjects(); // Redraw everything
+      
+        // Toggle selection modes
+        if (mode === "object") {
+          window.activateTool("select_object");
+    
+          window.selectionMode = !window.selectionMode;
+          window.selectednodeMode = false;
+        } else if (mode === "node") {
+          window.activateTool("select_node");
+    
+          window.selectednodeMode = !window.selectednodeMode;
+          window.selectionMode = false;
+        }
+      
+        // Add event listeners based on the active selection mode
+        Select_Object();
+        // Update button styles based on the selection mode
+        document.getElementById("selectButton").classList.toggle("clicked", window.selectionMode);
+        document.getElementById("selectnode").classList.toggle("clicked", window.selectednodeMode);
+      };
       // Sync with window.activeTool for global state tracking
       window.activeTool = activeTools; 
   
@@ -52,38 +84,7 @@ const Navbar = () => {
     drawCurve: true,
     drawGrid: true,
   });
-  const toggleSelectionMode = (mode) => {
-    // Ensure no event listeners are attached before toggling
-    clearEventListeners();
-    window.isSelecting = false; // Reset selection flag
-    window.selectedElement = null;
-    window.selectedObject = null;
-    window.selectednode = null;
-    window.checked_selection = true;
   
-    // Hide options for cleaner UI
-    hideOptions();
-    drawAllObjects(); // Redraw everything
-  
-    // Toggle selection modes
-    if (mode === "object") {
-      window.activateTool("select_object");
-
-      window.selectionMode = !window.selectionMode;
-      window.selectednodeMode = false;
-    } else if (mode === "node") {
-      window.activateTool("select_node");
-
-      window.selectednodeMode = !window.selectednodeMode;
-      window.selectionMode = false;
-    }
-  
-    // Add event listeners based on the active selection mode
-    Select_Object();
-    // Update button styles based on the selection mode
-    document.getElementById("selectButton").classList.toggle("clicked", window.selectionMode);
-    document.getElementById("selectnode").classList.toggle("clicked", window.selectednodeMode);
-  };
   
   // Handling the onClick for selection mode buttons
   
@@ -203,7 +204,7 @@ const Navbar = () => {
         <button 
           id="selectButton" 
           className={`btn btn-select toggleButton ${activeTools["select_object"] ? "clicked" : ""}`} 
-          onClick={() => toggleSelectionMode("object")}>
+          onClick={() => window.toggleSelectionMode("object")}>
           <img className="icon" src="./assert/select.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
@@ -211,7 +212,7 @@ const Navbar = () => {
         <button 
           id="selectnode" 
           className={`btn btn-node toggleButton ${activeTools["select_node"] ? "clicked" : ""}`} 
-          onClick={() => toggleSelectionMode("node")}>
+          onClick={() => window.toggleSelectionMode("node")}>
           <img className="icon" src="./assert/touchscreen.png" alt="" />
           <img className="btn btn-logo" src="./assert/download.png" alt="" />
         </button>
@@ -235,6 +236,7 @@ const Navbar = () => {
           window.selectednode = null; // Stores the selected line or grid
           window.checked_selection = true;
           drawImage();
+          hideOptions()
           setTimeout(() => {window.deactivateAllTools()},300)
 }
         }>

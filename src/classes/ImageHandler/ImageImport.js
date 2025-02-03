@@ -51,7 +51,7 @@ const ImageImport = (e) => {
         window.canvas.addEventListener("mouseup", canvaImageup);
         window.canvas.addEventListener("mousemove", canvaImagemove);
 
-        window.showCustomAlert("freeze image before drawing");
+        window.showCustomAlert("Freeze or lock image before drawing Line, Grid or Curve.");
       };
     };
   

@@ -119,7 +119,7 @@ const Headbar = () => {
                   min="1"
                   max="100"
                   style={{ width: "37px" }} 
-                  onChange={(e)=>{node_size(e);setNodeControlSize(e.target.value)}}
+                  onChange={(e)=>{node_size(e);setNodeControlSize(parseInt(e.target.value))}}
                 />
               </span>
             </div>
@@ -160,7 +160,7 @@ const Headbar = () => {
                   id="curve_length"
                   value={curveLength}
                   min="1"
-                  max="300"
+                  max="5"
                   style={{ width: "37px" }}
                   onChange={(e)=>{
                     window.selectedObject.line.updateControlPoints(window.ctx, parseInt(e.target.value));
@@ -295,6 +295,7 @@ const Headbar = () => {
                 padding: "2px",
                 fontSize: "12px",
                 paddingLeft: "12px",
+                paddingTop:"3px",
               }}
               id="doneButton"
               onClick={ () => {

@@ -17,11 +17,15 @@ export default async function drawAllObjects() {
           item.curve.transparency = 0;
   
         }
+        else if (item.line) {
+          item.curve.transparency = 0;
+  
+        }
       });
     }
     window.drawn_item.forEach(async (item) => {
       if (item.line) {
-        await item.line.redraw(window.ctx);
+        await item.line.draw(window.ctx);
       } else if (item.grid) {
         await item.grid.redraw(window.ctx);
       } else if (item.line_data) {

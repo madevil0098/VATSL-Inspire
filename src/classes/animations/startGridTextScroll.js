@@ -49,6 +49,7 @@ export default function startGridTextScroll(
   
       async animate() {
         this.text = window.startTextButtontextInput;
+        console.log(this.text)
         this.color1 = window.color1_4 || "#FF0000"; // Default color if empty
         this.color2 = window.color2_4 || "#0000FF"; // You can similarly add for the second color
   
