@@ -5,6 +5,7 @@ import color_ch from "../../classes/Selected_Object_update/Colour_Change";
 import node_size from "../../classes/Selected_Object_update/Node_Size";
 import drawAllObjects from "../../classes/Selection/drawAllObjects";
 import hideOptions from "../../classes/Selection/Hide_options";
+import Dropdown from "./DropDown";
 const Headbar = () => {
   // State to manage visibility of sections
   const [visibility, setVisibility] = useState({
@@ -80,18 +81,9 @@ const Headbar = () => {
         <div className="flex-2">
           {renderSection("options", "options", (
             <div className="flex">
-              <div id="dropdown-container" className="dropdown_container">
-                <div
-                  id="dropdown-toggle"
-                  className="dropdown_toggle"
-                  style={{
-                    fontSize: "12px",
-                    textAlign: "center",
-                    marginRight: "20px",
-                  }}
-                >
-                  Choose Product
-                </div>
+              <div id="dropdow5n-container" className="dropdow5n_container">
+                
+                <Dropdown/>
               </div>
             </div>
           ))}
@@ -163,6 +155,10 @@ const Headbar = () => {
                   max="5"
                   style={{ width: "37px" }}
                   onChange={(e)=>{
+                    if (parseInt(e.target.value) >5){
+                      setCurveLength(5)
+                      return
+                    }
                     window.selectedObject.line.updateControlPoints(window.ctx, parseInt(e.target.value));
                     drawAllObjects();
                     setCurveLength(e.target.value)

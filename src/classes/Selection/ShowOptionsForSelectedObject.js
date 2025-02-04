@@ -5,6 +5,7 @@ export default function showOptionsForSelectedObject(object) {
     if (object.line) {
       window.setSectionVisibility("options",true); // Show options panel
       window.setSectionVisibility("options1",true); // Show options panel
+      object.line.transparency = 1;
   
       window.setSectionVisibility("options4",true); // Show options panel
   

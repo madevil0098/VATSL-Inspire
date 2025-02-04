@@ -21,6 +21,7 @@ export default function endDraw(e) {
       window.canvas.style.cursor = "default"; // Default cursor for other modes
     }
     //hidepopOptions()
+    window.selectionMode=false;
     window.toggleSelectionMode("object")
     Select_Object()
     let value_p;

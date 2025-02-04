@@ -37,7 +37,7 @@ const Bottombar = ({ id, icon, used_in,button_click, buttonid, color1,color1_val
         aria-expanded={isOpen}
         onClick={toggleDropdown}
       >
-        <button className="btn btnm toggleButton btnm-fade">
+        <button className={`btn btnm toggleButton btnm-fade ${isOpen ? "clicked" : ""}`}>
           <img className="icon" src={icon} alt="" />
           <img
             className="btn"

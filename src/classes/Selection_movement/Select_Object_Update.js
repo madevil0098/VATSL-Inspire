@@ -16,19 +16,20 @@ function resizeLine(line, handle, dx, dy) {
       grid.y += dy;
       grid.width -= dx;
       grid.height -= dy;
-    } else if (handle === "top-right") {
+    } else if (handle ==="top-right" ) {
       grid.width += dx;
-      grid.y += dy;
+      grid.y += dy;  // Ensuring movement is properly adjusted
       grid.height -= dy;
-    } else if (handle === "bottom-left") {
+    } else if (handle ==="bottom-right" ) {
       grid.x += dx;
       grid.width -= dx;
-      grid.height += dy;
-    } else if (handle === "bottom-right") {
+      grid.height += dy; // Keeps the bottom growing properly
+    } else if (handle === "bottom-left") {
       grid.width += dx;
       grid.height += dy;
     }
   }
+  
   export default async function Update_selected_Object(e) {
     const pos = getMousePos(window.canvas, e);
   

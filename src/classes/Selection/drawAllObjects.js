@@ -11,18 +11,22 @@ export default async function drawAllObjects() {
     window.drawn_item.forEach(async (item) => {
   
     });
-    if (!window.selectedObject) {
+    
         window.drawn_item.forEach(async (item) => {
         if (item.curve) {
           item.curve.transparency = 0;
-  
+          if (window.selectedObject?.curve) {
+            window.selectedObject.curve.transparency=1
+          }
         }
         else if (item.line) {
-          item.curve.transparency = 0;
-  
+          item.line.transparency = 0;
+          if (window.selectedObject?.line) {
+            window.selectedObject.line.transparency=1
+          }
         }
       });
-    }
+    
     window.drawn_item.forEach(async (item) => {
       if (item.line) {
         await item.line.draw(window.ctx);

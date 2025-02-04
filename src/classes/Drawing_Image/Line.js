@@ -17,6 +17,7 @@ export default class Line {
     this.node_size = parseInt(this.lineWidth/2);
     this.initializeNodes();
     this.node_colour = "white";
+    this.img_dat =  ".\\assets\\EC-STAR-D70P5.png";
     
     }
   
@@ -91,7 +92,7 @@ export default class Line {
         const y = start.y + i * spacing * Math.sin(angle);
   
         // Create a white node (hole)
-        const holeNode = new Node(x, y, this.node_colour, this.node_size); // Smaller white nodes for holes
+        const holeNode = new Node(x, y, this.node_colour, this.node_size,this.img_dat); // Smaller white nodes for holes
         holeNode.drawimg(ctx_draw); // Draw the white node (hole)
         this.drawn_node.push({
           node: holeNode
@@ -103,7 +104,7 @@ export default class Line {
         end.x,
         end.y,
         this.node_colour,
-        this.node_size
+        this.node_size,this.img_dat
       ); // Last node at end point
       holeNode.drawimg(ctx_draw); // Draw the last white node
       this.drawn_node.push({
