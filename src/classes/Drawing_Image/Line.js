@@ -98,13 +98,15 @@ export default class Line {
           node: holeNode
         });
       }
-  
+      console.log(this.img_dat)
+
       // Ensure the last node is exactly at the end point of the line
       const holeNode = new Node(
         end.x,
         end.y,
         this.node_colour,
-        this.node_size,this.img_dat
+        this.node_size,
+        this.img_dat
       ); // Last node at end point
       holeNode.drawimg(ctx_draw); // Draw the last white node
       this.drawn_node.push({
@@ -124,7 +126,6 @@ export default class Line {
   }
 
   drawNodes(ctx) {
-    console.log(this.nodes,this.node_size)
     for (const node of this.nodes) {
       this.drawNode(ctx, node);
     }
@@ -132,7 +133,6 @@ export default class Line {
 
   drawNode(ctx, point) {
     ctx.beginPath();
-    console.log(this.node_size+2.5)
     ctx.arc(point.x, point.y, this.node_size*2.3, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(183, 201, 226, ${this.transparency})`;
  

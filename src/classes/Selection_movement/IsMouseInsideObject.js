@@ -1,8 +1,12 @@
-export default function isMouseInsideObject(mousePos, grid) {
+export default function isMouseInsideObject(mousePosX, mousePosY, grid) {
+  try {
     return (
-      mousePos.x >= grid.x &&
-      mousePos.x <= grid.x + grid.width &&
-      mousePos.y >= grid.y &&
-      mousePos.y <= grid.y + grid.height
+      mousePosX >= grid.x &&
+      mousePosX <= grid.x + grid.width &&
+      mousePosY >= grid.y &&
+      mousePosY <= grid.y + grid.height
     );
+  } catch (error) {
+    return false; // Return false in case of an error
   }
+}

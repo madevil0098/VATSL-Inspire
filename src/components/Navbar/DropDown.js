@@ -21,19 +21,24 @@ const Dropdown = () => {
    
   };
   const handleItemClick = (clickedItem) => {
-    const selectedValue = clickedItem.filename; // Get the filename
+    const selectedValue = clickedItem.fullPath; // Get the filename
 
     if (window.selectedObject) {
       if (window.selectedObject.line) {
+        console.log(window.selectedObject.line.img_dat)
+
         window.selectedObject.line.img_dat = selectedValue;
         for (let j = 0; j < window.selectedObject.line.drawn_node.length; j++) {
           window.selectedObject.line.drawn_node[j].node.img_dat = selectedValue;
         }
+        console.log(window.selectedObject.line.img_dat)
         drawAllObjects();
         setTimeout(() => {
           handleObjectSelection(window.selectedObject.start);
         }, 100);
       } else if (window.selectedObject.grid) {
+        window.selectedObject.grid.img_dat = selectedValue;
+
         for (let j = 0; j < window.selectedObject.grid.drawn_node.length; j++) {
           window.selectedObject.grid.drawn_node[j].node.img_dat = selectedValue;
         }
@@ -59,12 +64,19 @@ const Dropdown = () => {
     }, 100);
   };
   useEffect(() => {
-    window.electronAPI.getFiles().then((fetchedFiles) => {
-      setFiles(fetchedFiles.map((file) => ({
-        filename: file.filename, 
-        fullPath: file.fullPath,
-      })));
-    });
+    const fetchFiles = async () => {
+      try {
+        const fetchedFiles = await window.electronAPI.getFiles();
+        setFiles(fetchedFiles.map((file) => ({
+          filename: file.filename,
+          fullPath: file.fullPath,
+        })));
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    };
+  
+    fetchFiles();
   }, []);
   useEffect(() => {
     console.log("Updated files:", files);

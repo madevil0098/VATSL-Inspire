@@ -1,10 +1,10 @@
 export default class Node {
-    constructor(x, y, colour, size) {
+    constructor(x, y, colour, size,image= ".\\assets\\EC-STAR-D70P5.png") {
       this.x = x;
       this.y = y;
       this.colour = colour; // Array of 6 variables
       this.size = size; // A single variable to select
-      this.img_dat = ".\\assets\\EC-STAR-D70P5.png";
+      this.img_dat = image;
     }
     async drawImage(ctx_draw, image) {
       // Ensure the image is loaded before drawing

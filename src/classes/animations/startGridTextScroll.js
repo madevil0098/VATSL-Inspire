@@ -2,19 +2,18 @@ import drawAllObjects_img from "../Selection/drawAllObjects_img";
 export default function startGridTextScroll(
     objects_,
     text,
-  
     interval = 200,
-    scrollAxis = "horizontal"
+    scrollAxis = "horizontal",
+    font = "Times New Roman"
   ) {
   if (!objects_) return;
 
-    // Check if an animation for this object already exists
     const existingAnimationIndex = window.animations.findIndex(
       (anim) => anim.objectId === objects_
     );
     if (existingAnimationIndex !== -1) {
       window.animations[existingAnimationIndex].stop();
-      window.animations.splice(existingAnimationIndex, 1); // Removes the object from the array
+      window.animations.splice(existingAnimationIndex, 1);
     }
   
     const gridNodes = objects_.grid.drawn_node;
@@ -22,7 +21,6 @@ export default function startGridTextScroll(
     const rows = objects_.grid.columns;
     let twoDList = [];
   
-    // Create a 2D array for grid nodes
     for (let row = 0; row < objects_.grid.columns; row++) {
       let rowArray = [];
       for (let col = 0; col < objects_.grid.rows; col++) {
@@ -32,45 +30,43 @@ export default function startGridTextScroll(
       twoDList.push(rowArray);
     }
   
-    let offsetX = columns; // Initial offset for horizontal scrolling
-    let offsetY = rows; // Initial offset for vertical scrolling
-    let charIndex = 0; // To keep track of the current character in the text
+    let offsetX = columns;
+    let offsetY = rows;
+    let charIndex = 0;
   
     const animation = {
       objectId: objects_,
       isAnimating: true,
       animationFrameId: null,
       text,
+      font,
       color1: window.color1_4 || "#FF0000",
       color2: window.color2_4 || "#0000FF",
-      interval: 100,
+      interval: 800,
       direction: "horizontal",
       lastUpdateTime: Date.now(),
   
       async animate() {
         this.text = window.startTextButtontextInput;
-        console.log(this.text)
-        this.color1 = window.color1_4 || "#FF0000"; // Default color if empty
-        this.color2 = window.color2_4 || "#0000FF"; // You can similarly add for the second color
+        this.font = window.selectedFont || font;
+        this.color1 = window.color1_4 || "#FF0000";
+        this.color2 = window.color2_4 || "#0000FF";
   
         if (!this.isAnimating) return;
   
         const currentTime = Date.now();
         if (currentTime - this.lastUpdateTime >= this.interval) {
-          // Clear previous frame by setting all nodes to white
           for (let row = 0; row < rows; row++) {
             for (let col = 0; col < columns; col++) {
               if (twoDList[row][col]) {
-                twoDList[row][col].node.colour = this.color2; // Reset to white
+                twoDList[row][col].node.colour = this.color2;
               }
             }
           }
   
-          // Render the current character based on offsetX or offsetY
-          await scrollText(this.text, this.color1, this.direction);
+          await scrollText(this.text, this.color1, this.direction, this.font);
           drawAllObjects_img();
   
-          // Update timing for the next frame
           this.lastUpdateTime = currentTime;
         }
   
@@ -82,7 +78,10 @@ export default function startGridTextScroll(
         await this.animate();
       },
       setSpeed(newSpeed) {
-        this.interval = (5 - newSpeed) * 100;
+        this.interval = 0.7* (5 - newSpeed) * 100;
+      },
+      setFont(newFont) {
+        this.font = newFont;
       },
       setdirectio(direction) {
         this.direction = direction; // Update speed for this animation instance
@@ -94,13 +93,7 @@ export default function startGridTextScroll(
         this.isAnimating = false;
         if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
       },
-  
-  
     };
-  
-  
-  
-    // Function to rotate character data by 90 degrees clockwise
     function rotateCharData90(charData) {
       const rotated = [];
       const cols = charData.length;
@@ -115,51 +108,26 @@ export default function startGridTextScroll(
   
       return rotated;
     }
-  
     function mirrorCharData(charData) {
       return charData.map((row) => row.slice().reverse()); // Flips each row to create a horizontal mirror effect
     }
-    /**
-       * Generates a binary matrix representing a character rendered using a custom font.
-       
-      @param {string} char - The character to render.
-      * @param {string} fontUrl - The URL to the font file.
-      * @param {number} matrixSize - The size of the binary matrix (e.g., 8 for 8x8).
-      * @returns {Promise<number[][]>} A 2D binary matrix.
-      */
-    async function generateFontData(char, matrixSize = 8) {
-      // Load the custom font
-  
-      // Set up the canvas
+    async function generateFontData(char, matrixSize = 8, font = "Times New Roman") {
       const temcanvas = document.createElement("canvas");
       const temctx = temcanvas.getContext("2d");
-  
-      // Configure the temcanvas size and scaling
-      const scaleFactor = 20; // Increase for better resolution
+      const scaleFactor = 20;
       const temcanvasSize = matrixSize * scaleFactor;
       temcanvas.width = temcanvasSize * char.length;
       temcanvas.height = temcanvasSize;
   
-      // Configure the font
-      temctx.font = `${temcanvasSize *0.73}px Times New Roman`;
+      temctx.font = `${temcanvasSize * 0.73}px ${font}`;
       temctx.fillStyle = "black";
       temctx.textAlign = "center";
       temctx.textBaseline = "middle";
   
-  
-  
-      // Clear the temcanvas and render the character
       temctx.clearRect(0, 0, temcanvas.width, temcanvas.height);
-      temctx.fillStyle = "black";
       temctx.fillText(char, temcanvas.width / 2, temcanvas.height / 2);
   
-      // Debugging: Attach the temcanvas to the document for visual inspection
-  
-  
-      // Extract pixel data from the temcanvas
       const imageData = temctx.getImageData(0, 0, temcanvas.width, temcanvas.height).data;
-  
-      // Initialize the binary matrix
       const binaryMatrix = [];
       for (let y = 0; y < matrixSize; y++) {
         const row = [];
@@ -167,11 +135,9 @@ export default function startGridTextScroll(
           const pixelX = Math.floor(x * scaleFactor);
           const pixelY = Math.floor(y * scaleFactor);
   
-          // Get the alpha channel value
           const alphaIndex = (pixelY * temcanvas.width + pixelX) * 4 + 3;
           const alpha = imageData[alphaIndex];
   
-          // Convert to binary (threshold: alpha > 128)
           row.push(alpha > 128 ? 1 : 0);
         }
         binaryMatrix.push(row);
@@ -180,14 +146,8 @@ export default function startGridTextScroll(
       return binaryMatrix;
     }
   
-  
-    async function scrollText(message, color1, scrollAxis) {
-      let charData = await generateFontData(message, columns - 5);
-      //console.log(charData)
-  
-  
-  
-      if (charData) {
+    async function scrollText(message, color1, scrollAxis, font) {
+      let charData = await generateFontData(message, columns - 5, font);if (charData) {
         if (scrollAxis === "horizontal") {
           // Rotate character data for vertical scrolling
           charData = rotateCharData90(charData);

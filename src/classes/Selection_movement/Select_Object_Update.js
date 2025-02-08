@@ -49,6 +49,7 @@ function resizeLine(line, handle, dx, dy) {
         // Move the selected point
         window.selectedPoint.x = x;
         window.selectedPoint.y = y;
+        window.selectedObject.curve.ismoved=true;
         drawAllObjects(); // Redraw objects with updated sizes
       } else if (window.resizing && window.resizeHandle) {
         const pos = getMousePos(window.canvas, e);
@@ -61,6 +62,9 @@ function resizeLine(line, handle, dx, dy) {
           resizeLine(window.selectedObject.line_data, window.resizeHandle, dx, dy);
         } else if (window.selectedObject.grid) {
           resizeGrid(window.selectedObject.grid, window.resizeHandle, dx, dy);
+          if (window.selectedObject.grid.updateRow_col_val){
+            window.selectedObject.grid.updateRow_col()
+          }
         }
         window.dragOffset = {
           x: pos.x,

@@ -55,7 +55,7 @@ export default function startColorScrollingEffect(objects_, speed = 1) {
         cancelAnimationFrame(this.animationFrameId);
       },
       setSpeed(newSpeed) {
-        this.speed = 5 - newSpeed;
+        this.speed =1.2*( 5 - newSpeed);
       },
     };
   

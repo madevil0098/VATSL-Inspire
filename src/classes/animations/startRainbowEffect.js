@@ -81,7 +81,7 @@ export default function startRainbowEffect(objects_, speed = 1) {
         this.animate();
       },
       setSpeed(newSpeed) {
-        this.speed = Math.max(0.1, Math.min(10, 5 - newSpeed));
+        this.speed = 1.2*Math.max(0.1, Math.min(10, 5 - newSpeed));
       },
       stop() {
         this.isAnimating = false;

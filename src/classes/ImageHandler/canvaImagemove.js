@@ -30,8 +30,7 @@ function handleResize(x, y) {
     // Adjust speed if user moves fast
     
     // Cap movement per iteration to avoid jumps, adjust for fast movement
-    dx = Math.sign(dx) * Math.min(8 , Math.abs(dx));
-    dy = Math.sign(dy) * Math.min(8 , Math.abs(dy));
+
 
     // Calculate aspect ratio (width-to-height ratio)
     const aspectRatio = window.imgWidth / window.imgHeight;
@@ -60,18 +59,19 @@ function handleResize(x, y) {
   
         // Calculate proportional height change
         const proportionalChange = change / aspectRatio;
-  
+        if (change > 0) {
   
         // Increase width and height
         window.imgY -= proportionalChange; // Move top edge upward
         window.imgWidth += change;
         window.imgHeight += proportionalChange;
-  
+      } else {
         // Decrease width and height
         window.imgY -= proportionalChange; // Move top edge upward
   
         window.imgWidth += change; // Shrink width
         window.imgHeight += proportionalChange; // Shrink height, maintaining aspect ratio
+      }
   
   
         break;

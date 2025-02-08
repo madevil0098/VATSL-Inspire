@@ -9,7 +9,7 @@ export default class Grid extends Node {
     this.depth = 100; // Simulated depth for 3D effect
     this.colour = colour;
     this.dotRadius = Math.max(Math.abs(20 * 2 / (window.xRatio + window.yRatio)), 1);
-    this.node_size = this.dotRadius / 3;
+    this.node_size = Math.abs(this.dotRadius / 3);
     this.node_colour_ = "white";
     this.columns = Math.floor(width / cellSize);
     this.rows = Math.floor(height / cellSize);
@@ -20,6 +20,8 @@ export default class Grid extends Node {
     this.isDragging = false;
     this.nodesCount = 0;
     this.drawn_node = [];
+    this.img_dat =  ".\\assets\\EC-STAR-D70P5.png";
+    this.updateRow_col_val=false;
   }
 
   initGrid() {
@@ -78,7 +80,7 @@ export default class Grid extends Node {
     this.drawn_node = [];
     for (let node of this.nodes) {
       let rotatedPos = this.apply3DRotation(node.x, node.y, node.z);
-      const endNode = new Node(rotatedPos.x, rotatedPos.y, this.node_colour_, this.node_size);
+      const endNode = new Node(rotatedPos.x, rotatedPos.y, this.node_colour_, this.node_size,this.img_dat);
       endNode.drawimg(ctx_draw);
       this.drawn_node.push({ node: endNode });
     }

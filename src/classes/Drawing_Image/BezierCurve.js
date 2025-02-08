@@ -40,8 +40,8 @@ export default class BezierCurve  {
       this.control_colour = "gray";
       this.nose_color = "gray";
       this.node_size = this.lineWidth;
-  
-      this.elevationFactor = 50; // Factor to elevate control points
+      this.ismoved=false
+      this.elevationFactor = 30; // Factor to elevate control points
   
       this.initializeNodesAndControls();
     }
@@ -75,42 +75,109 @@ export default class BezierCurve  {
       } else {
         ctx.strokeStyle = addTransparencyToColor(this.nose_color, this.transparency_line);
       }
-      ctx.lineWidth = this.node_size+2;          // Set the line width
+      ctx.lineWidth = Math.sqrt(this.node_size *this.node_size+this.node_size*this.node_size);          // Set the line width
       ctx.stroke(); // Render the path
     }
     
     // Initialize nodes and control points dynamically
     initializeNodesAndControls() {
-      this.nodes = [this.start];
-      this.controls = [];
-  
-      // Create midpoints based on the number of control points
-      for (let i = 1; i < this.controlPointCount; i++) {
-        const t = i / (this.controlPointCount); // Calculate position for mids
-        const x = (1 - t) * this.start.x + t * this.end.x;
-        const y = (1 - t) * this.start.y + t * this.end.y;
-        this.nodes.push(new Point(x, y, this.control_colour));
+      if (!this.ismoved){
+        console.log()
+        this.initializeNodesAndControls_Start()
+        return 
       }
-  
-  
-      this.nodes.push(this.end); // Add the end node
-  
-      // Create control points between every two adjacent nodes
-      for (let i = 0; i < this.nodes.length - 1; i++) {
-        const midX = (this.nodes[i].x + this.nodes[i + 1].x) / 2;
-        const midY = (this.nodes[i].y + this.nodes[i + 1].y) / 2;
-  
-        // Apply elevation to the control point
-        const dx = this.nodes[i + 1].x - this.nodes[i].x; // Horizontal difference
-        const dy = this.nodes[i + 1].y - this.nodes[i].y; // Vertical difference
-        const length = Math.sqrt(dx ** 2 + dy ** 2); // Distance between nodes
-  
-        const offsetX = (dy / length) * this.elevationFactor; // Perpendicular offset in x
-        const offsetY = -(dx / length) * this.elevationFactor; // Perpendicular offset in y
-  
+      // If nodes are empty, initialize with start and end points
+      if (this.nodes.length === 0) {
+          this.nodes.push(this.start);
+          this.nodes.push(this.end);
+      }
+      if (this.controls.length === 0 && this.nodes.length > 1) {
+        const midX = (this.start.x + this.end.x) / 2;
+        const midY = (this.start.y + this.end.y) / 2;
+
+        const dx = this.end.x - this.start.x;
+        const dy = this.end.y - this.start.y;
+        const length = Math.sqrt(dx ** 2 + dy ** 2);
+
+        const offsetX = (dy / length) * this.elevationFactor;
+        const offsetY = -(dx / length) * this.elevationFactor;
         this.controls.push(new Point(midX + offsetX, midY + offsetY, this.control_colour));
-      }
     }
+    
+    
+      let currentCount = this.nodes.length - 2; // Excluding start and end
+      let difference = this.controlPointCount - currentCount-1;
+      console.log(currentCount,difference)
+    
+      if (difference > 0) {
+          // Increase: Add nodes and controls at the end side (stack behavior)
+
+          for (let i = 0; i < difference; i++) {
+              const t = (currentCount + i + 1) / Math.abs((this.start.x - this.end.x) / 7);
+              const x = (1 - t) * this.start.x + t * this.end.x;
+              const y = (1 - t) * this.start.y + t * this.end.y;
+              this.nodes.splice(1, 0, new Point(x, y, this.control_colour));// Insert before end
+              this.controls.reverse();
+              // Create a new control point between the new node and its previous one
+              if (this.nodes.length > 2) {
+                  const midX = (this.nodes[this.nodes.length - 3].x + this.nodes[this.nodes.length - 2].x) / 2;
+                  const midY = (this.nodes[this.nodes.length - 3].y + this.nodes[this.nodes.length - 2].y) / 2;
+  
+                  const dx = this.nodes[this.nodes.length - 2].x - this.nodes[this.nodes.length - 3].x;
+                  const dy = this.nodes[this.nodes.length - 2].y - this.nodes[this.nodes.length - 3].y;
+                  const length = Math.sqrt(dx ** 2 + dy ** 2);
+  
+                  const offsetX = (dy / length) * this.elevationFactor;
+                  const offsetY = -(dx / length) * this.elevationFactor;
+  
+                  this.controls.push(new Point(midX + offsetX, midY + offsetY, this.control_colour));
+              }
+              this.controls.reverse();
+          }
+      } else if (difference < 0) {
+          // Decrease: Remove nodes and corresponding last control point
+          this.nodes.splice(1, 1);
+
+          this.controls.reverse();
+
+          this.controls.splice(this.controls.length + difference, -difference); // Remove last control points
+          this.controls.reverse();
+
+      }
+  }
+  
+  initializeNodesAndControls_Start() {
+    this.nodes = [this.start];
+    this.controls = [];
+
+    // Create midpoints based on the number of control points
+    for (let i = 1; i < this.controlPointCount; i++) {
+      const t = i / (this.controlPointCount ); // Calculate position for mids
+      const x = (1 - t) * this.start.x +t * this.end.x;
+      const y = (1 - t) * this.start.y + t * this.end.y;
+      this.nodes.push(new Point( x, y,  this.control_colour ));
+    }
+
+    this.nodes.push(this.end); // Add the end node
+
+    // Create control points between every two adjacent nodes
+    for (let i = 0; i < this.nodes.length - 1; i++) {
+      const midX = (this.nodes[i].x + this.nodes[i + 1].x) / 2;
+      const midY = (this.nodes[i].y + this.nodes[i + 1].y) / 2;
+
+      // Apply elevation to the control point
+      const dx = this.nodes[i + 1].x - this.nodes[i].x; // Horizontal difference
+      const dy = this.nodes[i + 1].y - this.nodes[i].y; // Vertical difference
+      const length = Math.sqrt(dx ** 2 + dy ** 2); // Distance between nodes
+
+      const offsetX = (dy / length) * this.elevationFactor; // Perpendicular offset in x
+      const offsetY = -(dx / length) * this.elevationFactor; // Perpendicular offset in y
+
+      this.controls.push(new Point(  midX + offsetX, midY + offsetY, this.control_colour ));
+    }
+  }
+
+  
     getBezierTangent(t) {
       const n = this.nodes.length;
       let tangent = new Point(0, 0);
@@ -177,7 +244,30 @@ export default class BezierCurve  {
   
       return totalLength;
     }
+    calculateCurveLength_parts(start,control,end) {
+      const steps = 100000; // More steps = better approximation
+      let totalLength = 0;
   
+      
+  
+        let segmentLength = 0;
+        let prevPoint = this.getQuadraticPoint(0, start, control, end);
+  
+        for (let j = 1; j <= steps; j++) {
+          const t = j / steps;
+          const currentPoint = this.getQuadraticPoint(t, start, control, end);
+          segmentLength += Math.hypot(
+            currentPoint.x - prevPoint.x,
+            currentPoint.y - prevPoint.y
+          );
+          prevPoint = currentPoint;
+        }
+  
+        totalLength += segmentLength;
+      
+  
+      return totalLength;
+    }
     // Populate all nodes for drawing purposes
     populateNodes() {
       this.drawnNodes = [];
@@ -204,6 +294,7 @@ export default class BezierCurve  {
         y
       };
     }
+    
     
     
   
@@ -391,8 +482,6 @@ export default class BezierCurve  {
   
     // Function to calculate and draw nodes along the curve
     drawCurve(ctx) {
-      const curveLength = this.calculateCurveLength(); // Calculate the total length of the curve
-      this.nodeCount = Math.floor(curveLength / (this.node_size * Math.max(1, this.controls.length - 1))); // Determine the number of nodes based on line width
       this.drawn_node = []; // Reset the drawn nodes array
   
       // Loop through each segment of the curve
@@ -400,7 +489,10 @@ export default class BezierCurve  {
         const start = this.nodes[i]; // Start point of the segment
         const control = this.controls[i]; // Control point of the segment
         const end = this.nodes[i + 1]; // End point of the segment
-  
+        const curveLength = this.calculateCurveLength_parts(start, control, end); // Calculate the total length of the curve
+        this.nodeCount = Math.floor(curveLength *1.5/ (this.node_size)); // Determine the number of nodes based on line width
+        console.log(curveLength,this.nodeCount)
+        
         // Populate and draw nodes along the current segment
         for (let t = 0; t <= 1; t += 1 / this.nodeCount) {
           // Calculate the point and tangent for the current segment

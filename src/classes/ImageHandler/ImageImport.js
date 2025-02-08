@@ -18,13 +18,14 @@ const ImageImport = (e) => {
         window.image_file = new Image();
         window.image_file.src = event.target.result;
         window.image_file.onload = function () {
-            window.canvas.width = 1200;
-            window.canvas.height = 600;
+            window.canvas.width = window.innerWidth-100;
+            window.canvas.height = window.innerHeight-100;
+            console.log(window.workArea.height,window.workArea.width)
             window.imgWidth = window.image_file.width;
             window.imgHeight = window.image_file.height;
   
-        const widthRatio = (window.canvas.width - 100) / window.imgWidth;
-        const heightRatio = (window.canvas.height - 100) / window.imgHeight;
+        const widthRatio = (window.canvas.width ) / window.imgWidth;
+        const heightRatio = (window.canvas.height) / window.imgHeight;
         const scaleFactor = Math.min(widthRatio, heightRatio); // Ensure the image does not scale up
   
         // Scale the image dimensions

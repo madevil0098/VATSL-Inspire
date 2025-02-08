@@ -34,17 +34,28 @@ const Headbar = () => {
   const [gridWidthNodeControl, setGridWidthNodeControl] = useState(window.selectedObject?.grid?.rows  ?? "");
   const [changeAlpha, setChangeAlpha] = useState(window.selectedObject?.curve?.transparency_line ?? "");
   const [curveLength, setCurveLength] = useState(window.selectedObject?.curve?.controlPointCount ?? window.selectedObject?.line?.controlPointCount ??"");
+  const [gridSpaceNodeControl3, setGridSpaceNodeControl3] = useState(window.selectedObject?.grid?.updateRow_col_val ? 1 : 0);
   
   // UseEffect to allow visibility control through the global `window` object
   useEffect(() => {
-        setGridRows(window.selectedObject?.grid?.columns  ?? "");
-        setChangeColor(window.selectedObject?.colour ?? "");
-        setNodeControlSize(getNodeControlSize());
-        setLineNodeControlLength("");  // Reset or assign a default value if applicable
-        setGridSpaceNodeControl2("");  // Reset or assign a default value if applicable
-        setGridWidthNodeControl(window.selectedObject?.grid?.rows ?? "");
-        setChangeAlpha(window.selectedObject?.curve?.transparency_line ?? "");
-        setCurveLength(window.selectedObject?.curve?.controlPointCount ?? window.selectedObject?.line?.controlPointCount ?? "");
+    const interval = setInterval(() => {
+      if (!window.selectedObject) return;
+      setGridRows(window.selectedObject?.grid?.columns  ?? "");
+      setChangeColor(window.selectedObject?.colour ?? "");
+      setNodeControlSize(getNodeControlSize());
+      setLineNodeControlLength("");  // Reset or assign a default value if applicable
+      setGridSpaceNodeControl2("");  // Reset or assign a default value if applicable
+      setGridWidthNodeControl(window.selectedObject?.grid?.rows ?? "");
+      setChangeAlpha(window.selectedObject?.curve?.transparency_line ?? "");
+      setGridSpaceNodeControl3(window.selectedObject?.grid?.updateRow_col_val ? 1 : 0);
+      setCurveLength(window.selectedObject?.curve?.controlPointCount ?? window.selectedObject?.line?.controlPointCount ?? "");
+    }, 500); // Runs every 500ms
+
+    return () => clearInterval(interval);
+}, []);
+
+  useEffect(() => {
+        
     window.setSectionVisibility = (section, value) => {
       if (visibility.hasOwnProperty(section)) {
         setVisibility((prev) => ({
@@ -105,7 +116,7 @@ const Headbar = () => {
               <span>
                 <label>Node Size</label>
                 <input
-                value={nodeControlSize}
+                value={parseInt(nodeControlSize)}
                   type="number"
                   id="nodeControl_size"
                   min="1"
@@ -231,6 +242,18 @@ const Headbar = () => {
                     setGridRows(e.target.value)
                   }}
                 />
+              </span>
+              <span>
+                <input type="checkbox" id="checkButton_grid"  value={gridSpaceNodeControl3}
+                onChange={(e) => {
+                  const value = e.target.checked ? 1 : 0; // Assign 1 if checked, 0 otherwise
+                  setGridSpaceNodeControl3(value);
+
+                  window.selectedObject.grid.updateRow_col_val = value;
+
+                  drawAllObjects();
+                }}/>
+                <label>update row and colume </label>
               </span>
               <button onClick={() => window.toggleGridPopup(true)}>Rotation Setting
                 

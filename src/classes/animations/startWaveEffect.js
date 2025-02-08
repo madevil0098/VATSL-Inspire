@@ -67,7 +67,7 @@ export default function startWaveEffect(objects_, speed = 1, waveLength = 25) {
         this.animate();
       },
       setSpeed(newSpeed) {
-        this.speed = (5 - newSpeed);
+        this.speed = 1.2*(5 - newSpeed);
       },
       stop() {
         this.isAnimating = false;

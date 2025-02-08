@@ -1,3 +1,4 @@
+import isMouseInsideObject from "../Selection_movement/IsMouseInsideObject";
 
 export default function isMouseNearObject(mouseX, mouseY, object, tolerance = 0.5) {
     if (object.line) {
@@ -119,12 +120,15 @@ export default function isMouseNearObject(mouseX, mouseY, object, tolerance = 0.
 
         // Effective selection area: max(nodeSize, cellSize * 0.5) ensures grid spaces are clickable
         const selectionRange = Math.max(nodeSize, cellSize * 0.5) + tolerance;
-
+        
         if (
             Math.abs(mouseX - x) <= selectionRange &&
             Math.abs(mouseY - y) <= selectionRange
         ) {
             return true; // Mouse click is close enough to a visible node
+        }
+        if (isMouseInsideObject(mouseX,mouseY,object.grid)){
+          return true
         }
     }
   }

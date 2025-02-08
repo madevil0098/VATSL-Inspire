@@ -148,6 +148,8 @@ export default function endDraw(e) {
       window.spacing = window.node_distance;
       window.linesize = 15;
       window.colour = "rgb(255,0,0)";
+      window.currentCurve.nodes=[];
+      window.currentCurve.controls=[];
       window.currentCurve.initializeNodesAndControls()
   
       window.currentCurve.draw(window.ctx);

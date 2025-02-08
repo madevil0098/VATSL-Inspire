@@ -1,5 +1,6 @@
 canvas {
   position: inherit;
+  
   border: 1px;
   display: block;
   z-index: 10;

@@ -35,7 +35,7 @@ export default function sendImagesToFunction(object_, imageListData) {
         this.animate();
       },
       setSpeed(newSpeed) {
-        this.speed = 5 - newSpeed;
+        this.speed = 1.2*(5 - newSpeed);
       },
       stop() {
         this.isAnimating = false;

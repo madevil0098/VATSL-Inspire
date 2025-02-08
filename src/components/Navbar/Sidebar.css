@@ -15,6 +15,54 @@
     justify-content: center;
     /* align-items: center; */
   }
+  .image-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Style for the image preview */
+  .image-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  /* Style for the name and delete button */
+  .image-item span {
+    flex-grow: 1;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Approx. 20 characters depending on the font size */
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .image-item span:hover {
+    max-width: none; /* Allows text to fully expand on hover */
+    white-space: normal; /* Allows wrapping */
+  }
+  
+  /* Style for the delete button */
+  .image-item button {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .dropdown {
     position: relative;
     display: inline-block;
@@ -166,4 +214,15 @@
     position: relative;
     display: inline-block;
     font-family: Arial, sans-serif;
+  }
+  .image-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px; /* Adjust the height for scrolling */
+    overflow-y: auto;
+    gap: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
   }

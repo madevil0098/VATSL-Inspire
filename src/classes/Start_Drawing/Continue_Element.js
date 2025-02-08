@@ -87,6 +87,8 @@ export default function continueDraw(e) {
       window.ctx.putImageData(window.now_canvas, 0, 0);
       window.currentCurve.end.x = window.pos.x;
       window.currentCurve.end.y = window.pos.y;
+      window.currentCurve.nodes=[];
+      window.currentCurve.controls=[];
       window.currentCurve.initializeNodesAndControls()
       window.currentCurve.draw(window.ctx)
     }

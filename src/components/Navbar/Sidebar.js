@@ -14,10 +14,30 @@ import startRainbowEffect from "../../classes/animations/startRainbowEffect";
 import startBlinkingLightsEffect from "../../classes/animations/startBlinkingLightsEffect";
 import startOrthogonalWavesEffect from "../../classes/animations/startOrthogonalWavesEffect";
 import color1upd from "../../classes/AnimationControl/color1upd";
+import sendImagesToFunction from "../../classes/animations/sendImagesToFunction";
 const Sidebar=() =>{
     const fileInputRef = useRef(null);    
+    const ImageInputRef = useRef(null);    
     const [activeTools,setActiveTools] = useState(() => window.activeTools || {}); // Maintain global state
-    
+    const [images, setImages] = useState([]);
+
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImages((prevImages) => [
+            ...prevImages,
+            { id: Date.now(), src: e.target.result, name: file.name },
+          ]);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+  
+    const handleDelete = (id) => {
+      setImages((prevImages) => prevImages.filter((image) => image.id !== id));
+    };
     const [color1_1, setColor1_1] = useState(window.color1_1 || "#FF0000");
     const [color2_1, setColor2_1] = useState(window.color2_1 || "#0000FF");
 
@@ -30,7 +50,10 @@ const Sidebar=() =>{
     const [rainbowBands, setRainbowBands] = useState(window.rainbowBandsInput || 7);
     const [numInput, setNumInput] = useState(window.numinput10 || 3);
     const [textInput, setTextInput] = useState(window.startTextButtontextInput || "VATSL");
-useEffect(() => {
+    const handleImageInputClick = () => {
+      ImageInputRef.current.click();
+    };
+    useEffect(() => {
       // Sync with window.activeTool for global state tracking
       window.activeTool_sidebar = activeTools; 
       window.color1_1 = color1_1;
@@ -166,7 +189,17 @@ useEffect(() => {
                           <option value="horizontal">Horizontal</option>
                           <option value="vertical">Vertical</option>
                         </select>
-                      </div></>}
+                      </div>
+                      <div className="dropdown-item" data-value="4">
+                          <label className="direction-select" htmlFor="font-select">Select Font:</label>
+                          <select className="direction-select_list" id="font-select" onChange={(e) => window.selectedFont = e.target.value}>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Verdana">Verdana</option>
+                          </select>
+                        </div></>}
                 />
                 <Bottombar
                     id="8"
@@ -196,6 +229,37 @@ useEffect(() => {
                     dropdown={null}
                 />
                 <Bottombar
+                    id="11"
+                    icon="./assert/photo-edit.png"
+                    button_click={(e)=>{let imageListData=[];
+                      images.forEach(item => {
+                      imageListData.push(item.src);
+                    });
+                      sendImagesToFunction(window.selectedObject,imageListData)}}
+
+                    used_in="grid"
+                    buttonid="startwaterButton11"
+                    color1={null}
+                    color2={null}
+                    dropdown={<div>
+                        <button id="addImageButton11" onClick={handleImageInputClick} className="btn btnm  toggleButton add-image-button">Add Image</button>
+                        <input type="file" ref={ImageInputRef} onChange={handleImageChange} id="imageInput11" accept="image/*" style={{display: "none"}} />
+                        <div id="imageList11" className="image-list">
+                        {images.map((image) => (
+                        <div key={image.id} className="image-item" >
+                          <img src={image.src} alt={image.name}  />
+                          <span>{image.name}</span>
+                          <button
+                            onClick={() => handleDelete(image.id)}
+                          >
+                            ×
+                          </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>}
+                />
+                <Bottombar
                     id="3"
                     icon="./assert/blur.png"
                     button_click={startOrthogonalWavesEffect}
@@ -205,6 +269,7 @@ useEffect(() => {
                     color2={null}
                     dropdown={null}
                 />
+                
                 <input type="file" id="imageInput2" style={{display: "none"}} ref={fileInputRef} accept="image/*" />
                 <button id="add_imgButton" onClick={handleFileInputClick}
                 className="btn btnm  toggleButton btnm-image-upload-grid">
@@ -218,19 +283,7 @@ useEffect(() => {
                         }} />
                 </button>
 
-                <Bottombar
-                    id="11"
-                    icon="./assert/photo-edit.png"
-                    used_in="grid"
-                    buttonid="startwaterButton11"
-                    color1={null}
-                    color2={null}
-                    dropdown={<div>
-                        <button id="addImageButton11" className="btn btnm  toggleButton add-image-button">Add Image</button>
-                        <input type="file" id="imageInput11" accept="image/*" style={{display: "none"}} />
-                        <div id="imageList11" className="image-list"></div>
-                      </div>}
-                />
+                
                         <button id="startAnimationButton_full" className={`btn btnm btnm-start toggleButton ${activeTools["startAnimationButton_full"] ? "clicked" : ""}`} onClick={starrSelectedObject_full}>
                 <img className="icon" src="./assert/start-button.png" alt="" />
                 <img className="btn" alt="" src="./assert/download.png" style={{

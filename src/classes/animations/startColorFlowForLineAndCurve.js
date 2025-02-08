@@ -90,7 +90,7 @@ export default function startColorFlowForLineAndCurve(objects_, direction = "lef
         this.animate();
       },
       setSpeed(newSpeed) {
-        this.speed = newSpeed;
+        this.speed = newSpeed*1.2;
       },
       setnum(val) {
         this.blockSize = Math.max(2, val);
